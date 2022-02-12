@@ -1,6 +1,6 @@
 import {Elevation, Style} from './Styles';
 
-export const shadowElevation: {[key in Elevation]: Style} = {
+export const shadowElevation: { [key in Elevation]: Style } = {
   0: {},
   1: {
     shadowColor: "#000",
@@ -91,5 +91,5 @@ export const shadowElevation: {[key in Elevation]: Style} = {
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
     elevation: 24,
-  }
+  },
 }

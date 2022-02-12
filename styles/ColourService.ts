@@ -28,8 +28,7 @@ export class ColourService extends Component<{}, {}> {
 
   getViewElevationStyle(elevation: Elevation, brightness: Brightness): Style {
     return {
-      ...shadowElevation[elevation],
-      ...backgroundColor[brightness][elevation],
+      ...shadowElevation[elevation], ...backgroundColor[brightness][elevation],
     }
   }
 }

@@ -1,10 +1,10 @@
 import {Brightness, Colour, Elevation, Style} from './Styles';
 
-type ColorDefinition = {[key in Colour]: {primary: string, light?: string, dark?: string}};
+type ColorDefinition = { [key in Colour]: {primary: string, light?: string, dark?: string} };
 
-type TextDefinition = {[key in Colour]: string};
+type TextDefinition = { [key in Colour]: string };
 
-export const Colours: {[key in Brightness]: {text: TextDefinition, color: ColorDefinition}} = {
+export const Colours: { [key in Brightness]: {text: TextDefinition, color: ColorDefinition} } = {
   dark: {
     color: {
       primary: {
@@ -54,7 +54,7 @@ export const Colours: {[key in Brightness]: {text: TextDefinition, color: ColorD
         primary: '#ffffff',
       },
       surface: {
-        primary: '#ffffff'
+        primary: '#ffffff',
       },
     },
     text: {
@@ -67,7 +67,7 @@ export const Colours: {[key in Brightness]: {text: TextDefinition, color: ColorD
   },
 };
 
-export const backgroundColor: {[key in Brightness]: {[key in Elevation]: Pick<Style, 'backgroundColor'>}} = {
+export const backgroundColor: { [key in Brightness]: { [key in Elevation]: Pick<Style, 'backgroundColor'> } } = {
   dark: {
     0: {backgroundColor: '#121212'},
     1: {backgroundColor: '#1d1d1d'},

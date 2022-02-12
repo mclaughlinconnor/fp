@@ -1,6 +1,6 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ComponentProps } from 'react';
-import { Nib } from '../Nib/Nib';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {ComponentProps} from 'react';
+import {Nib} from '../Nib/Nib';
 
 export type Pen = {
   color: string;

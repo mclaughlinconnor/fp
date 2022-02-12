@@ -1,8 +1,8 @@
-import { Text as DefaultText, View as DefaultView } from 'react-native';
+import {Text as DefaultText, View as DefaultView} from 'react-native';
 
 import useColorScheme from '../../hooks/useColorScheme';
-import { Elevation } from '../../styles/Styles';
-import { ColourService } from '../../styles/ColourService';
+import {Elevation} from '../../styles/Styles';
+import {ColourService} from '../../styles/ColourService';
 
 type ThemeProps = {
   colour?: 'primary' | 'secondary' | 'error' | 'surface' | 'background';
