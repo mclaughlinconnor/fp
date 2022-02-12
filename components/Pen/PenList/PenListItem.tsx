@@ -1,22 +1,12 @@
 import { StyleSheet, ViewStyle } from 'react-native';
-import { Text, View } from '../../Themed';
+import { Text, View } from '../../Styling/Themed';
 import { Pen } from '../Pen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {ColourService} from '../../../styles/ColourService';
 
-const depthTwo = {
-  shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 1,
-  },
-  shadowOpacity: 0.20,
-  shadowRadius: 1.41,
-
-  elevation: 2,
-}
+const colourSvc = new ColourService({});
 
 const card = {
-  backgroundColor: 'white',
   borderRadius: 4
 }
 
@@ -35,7 +25,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 80,
     height: 80,
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   item: {
     marginVertical: 4,
@@ -43,33 +33,27 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     ...horizontalLayout,
     ...card,
-    ...depthTwo
   },
   data: {
     marginHorizontal: 10,
-    color: 'black',
-    backgroundColor: 'white',
     ...verticalLayout
   },
   color: {
     fontSize: 14,
-    color: 'black'
   },
   name: {
-    color: 'black',
     fontSize: 24,
     fontWeight: 'bold'
   },
   nib: {
     textTransform: 'uppercase',
-    color: 'black'
   }
 });
 
 export default function PenListItem({ pen }: { pen: Pen }) {
   return (
-    <View style={styles.item}>
-      <MaterialCommunityIcons size={styles.icon.width} style={styles.icon} name={pen.icon} />
+    <View style={styles.item} elevation={2}>
+      <MaterialCommunityIcons size={styles.icon.width} style={[styles.icon, colourSvc.getTextColourStyle()]} name={pen.icon} />
       <View style={styles.data}>
         <Text style={styles.nib}>{pen.nib.size}</Text>
         <Text style={styles.name}>{pen.name}</Text>

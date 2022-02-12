@@ -1,10 +1,19 @@
 import { FlatList, StyleSheet } from 'react-native';
-import { View } from '../../Themed';
+import { View } from '../../Styling/Themed';
 import PenListItem from './PenListItem';
 import { Pen } from '../Pen';
 import PenService from '../PenService';
 
 export default function PenList() {
+  const styles = StyleSheet.create({
+    item: {
+      width: '100%'
+    },
+    container: {
+      // marginVertical: 0,
+      paddingVertical: 5
+    }
+  });
 
   const penSvc = new PenService({});
 
@@ -18,8 +27,9 @@ export default function PenList() {
 
   return (
     <View>
-      <View style={styles.container}>
+      <View style={styles.item}>
         <FlatList
+          contentContainerStyle={styles.container}
           data={getPens()}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
@@ -28,10 +38,3 @@ export default function PenList() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    width: '100%'
-  },
-});
