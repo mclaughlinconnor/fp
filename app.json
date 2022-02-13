@@ -18,17 +18,25 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "extra": {
+      "flipperHack": "React Native packager is running"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mclaughlin.fp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mclaughlin.fp"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "plugins": [
+      "@liamdawson/disable-react-native-flipper-databases-expo-plugin"
+    ]
   }
 }

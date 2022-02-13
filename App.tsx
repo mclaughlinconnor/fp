@@ -1,9 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {LogBox} from 'react-native';
+import {StatusBar} from 'expo-status-bar';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import 'expo-dev-client';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+
+// Warning because I'm using weird versions of Expo SDK and React-Native to use Realm
+LogBox.ignoreLogs([
+  "Overwriting fontFamily style attribute preprocessor",
+]);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -13,9 +20,9 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
+      <SafeAreaProvider style={{flex: 1}}>
+        <Navigation colorScheme={colorScheme}/>
+        <StatusBar/>
       </SafeAreaProvider>
     );
   }
