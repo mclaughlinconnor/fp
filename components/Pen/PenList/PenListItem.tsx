@@ -1,8 +1,9 @@
 import {StyleSheet, ViewStyle} from 'react-native';
 import {Text, View} from '../../Styling/Themed';
-import {Pen} from '../Pen';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../../styles/ColourService';
+import {PenModel} from '../../../db/models/PenModel';
+import {NibModel} from '../../../db/models/NibModel';
 
 const colourSvc = new ColourService({});
 
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     height: 80,
     marginHorizontal: 10,
   },
-  item: {
+  view: {
     marginVertical: 4,
     marginHorizontal: 10,
     paddingVertical: 10,
@@ -50,14 +51,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function PenListItem({pen}: {pen: Pen}) {
-  return (<View style={styles.item} elevation={2}>
-    <MaterialCommunityIcons size={styles.icon.width} style={[styles.icon, colourSvc.getTextColourStyle()]}
-                            name={pen.icon}/>
+export default function PenListItem({pen}: {pen: PenModel}) {
+  function nibNames(nibs: NibModel[]) {
+    return nibs
+      .map(nib => `${nib.manufacturer} ${nib.size}`)
+      .join(', ');
+  }
+
+  return (<View style={styles.view} elevation={2}>
+    <MaterialCommunityIcons
+      size={styles.icon.width}
+      style={[styles.icon, colourSvc.getTextColourStyle()]}
+      name={pen.icon}
+    />
     <View style={styles.data}>
-      <Text style={styles.nib}>{pen.nib.size}</Text>
+      <Text style={styles.nib}>{nibNames(pen.nibs)}</Text>
       <Text style={styles.name}>{pen.name}</Text>
-      <Text style={styles.color}>{pen.color}</Text>
+      <Text style={styles.color}>{pen.colour}</Text>
     </View>
   </View>);
 }

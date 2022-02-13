@@ -1,0 +1,133 @@
+import {NibModel} from '../db/models/NibModel';
+import {PenModel} from '../db/models/PenModel';
+
+const jEF = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('23cedeac-dede-4ac7-82c9-e9dc7f994498'),
+  size: 'extra fine',
+  manufacturer: 'Jinhao',
+} as NibModel;
+const lM = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('014b5c46-44d8-402f-bbb9-30a80c763436'),
+  size: 'medium',
+  manufacturer: 'Lamy',
+} as NibModel;
+const tB = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('cae95d64-5743-44ea-b6f3-1c487af4a1cf'),
+  size: 'broad',
+  manufacturer: 'TWISBI',
+} as NibModel;
+const pM = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('c87eeabd-82f3-4eac-80b3-be482d9bc6b8'),
+  size: 'medium',
+  manufacturer: 'Parker',
+} as NibModel;
+const cM = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('790e8830-ef79-459d-be9d-7d6a3732c36a'),
+  size: 'medium',
+  manufacturer: 'Cross',
+} as NibModel;
+const lS = {
+  colour: 'Black',
+  _id: new Realm.BSON.UUID('201ffea3-1228-46fd-a263-91788ec16eec'),
+  size: '1.1mm stub',
+  manufacturer: 'Lamy',
+} as NibModel;
+const jM = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('50a3b23c-b82c-4eb1-b463-fb0c77067aae'),
+  size: 'medium',
+  manufacturer: 'Jinhao',
+} as NibModel;
+const kM = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('7dbdcc67-3e3a-4596-9869-f330f902047d'),
+  size: 'medium',
+  manufacturer: 'Kaweko',
+} as NibModel;
+const pF = {
+  colour: 'Silver',
+  _id: new Realm.BSON.UUID('c4b4be7c-cccb-4405-bdd6-60608e098f8a'),
+  size: 'fine',
+  manufacturer: 'Platinum',
+} as NibModel;
+
+export const Pens: Partial<PenModel>[] = [
+  {
+    colour: 'white',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('4c2032bd-a3c7-4311-a4c5-e919596a8533'),
+    name: 'LAMY Safari',
+    nibs: [lM],
+  }, {
+    colour: 'black',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('186b7588-f128-4af4-87a7-f7cd5a856a42'),
+    name: 'LAMY Safari',
+    nibs: [lS],
+  }, {
+    colour: 'black',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('18249270-3e35-4669-861a-4d3e694cde20'),
+    name: 'Jinhao 993 (Shark)',
+    nibs: [jEF],
+  }, {
+    colour: 'red',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('ff209d8f-818a-45fc-a049-e4463da2275c'),
+    name: 'Jinhao 993 (Shark)',
+    nibs: [jEF],
+  }, {
+    colour: 'blue',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('2fea7cb0-e047-41d9-89fb-59aa8948bdcb'),
+    name: 'Jinhao 993 (Shark)',
+    nibs: [jEF],
+  }, {
+    colour: 'white',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('e4abbd1f-960b-483e-8314-e49dc7e82b9c'),
+    name: 'Jinhao 993 (Shark)',
+    nibs: [jEF],
+  }, {
+    colour: 'black',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('19c7f1d1-5276-4521-aa8a-7955bed84e25'),
+    name: 'Jinhao x750',
+    nibs: [jM],
+  }, {
+    colour: 'gold/silver',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('0c3919bb-8a86-420c-8b12-7f2f9900f976'),
+    name: 'Parker Sonnet',
+    nibs: [pM],
+  }, {
+    colour: 'black',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('d3a89e8a-c6e5-473c-b641-d2ae21da7366'),
+    name: 'Cross Calais',
+    nibs: [cM],
+  }, {
+    colour: 'white/blue',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('b8f90d94-7980-49eb-a09b-b3987e258de7'),
+    name: 'Kaweko Perkeo',
+    nibs: [kM],
+  }, {
+    colour: 'transparent',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('36b6c516-685c-48a3-b4d3-38209a192465'),
+    name: 'Platinum Preppy',
+    nibs: [pF],
+  }, {
+    colour: 'transparent',
+    icon: 'fountain-pen-tip',
+    _id: new Realm.BSON.UUID('3070dc1d-79ae-4ede-9aca-4800640ca4ad'),
+    name: 'TWISBI Go',
+    nibs: [tB],
+  },
+]
