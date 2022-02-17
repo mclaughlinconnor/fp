@@ -1,12 +1,13 @@
 import {FlatList, StyleSheet} from 'react-native';
 import {View} from '../../Styling/Themed';
+import {FloatingActionButton} from '../../Styling/FloatingActionButton';
 import PenListItem from './PenListItem';
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {PenModel} from '../../../db/models/PenModel';
 import {Props} from '../PenNavigator';
 import {realmInstance} from '../../../db/Realm';
 
-export default function PenList({route, navigation}: Props) {
+export default function PenList({navigation}: Props) {
   const [pens, setPens] = useState<Realm.Results<PenModel> | []>([]);
 
   useEffect(() => {
@@ -30,25 +31,6 @@ export default function PenList({route, navigation}: Props) {
     };
   }, [realmInstance]);
 
-  const handleAddPen = useCallback(
-    (pen: PenModel): void => {
-      realmInstance?.write(() => {
-        realmInstance?.create('PenModel', PenModel.generate(pen));
-      });
-    },
-    [realmInstance]
-  );
-
-  const handleDeletePen = useCallback(
-    (pen: PenModel): void => {
-      const realm = realmInstance;
-      realm?.write(() => {
-        realm?.delete(pen);
-      });
-    },
-    [realmInstance]
-  );
-
   const styles = StyleSheet.create({
     view: {
       width: '100%',
@@ -70,5 +52,6 @@ export default function PenList({route, navigation}: Props) {
       renderItem={renderItem}
       keyExtractor={item => item._id.toString()}
     />
+    <FloatingActionButton onPress={() => navigation.navigate('Pen', {screen: 'PenCreate'})}/>
   </View>);
 }
