@@ -2,7 +2,7 @@ import {Brightness, Colour, Elevation, Style} from './Styles';
 
 type ColorDefinition = { [key in Colour]: {primary: string, light?: string, dark?: string} };
 
-type TextDefinition = { [key in Colour]: string };
+type TextDefinition = { [key in Colour]: string } & { label: string };
 
 export const Colours: { [key in Brightness]: {text: TextDefinition, color: ColorDefinition} } = {
   dark: {
@@ -18,7 +18,7 @@ export const Colours: { [key in Brightness]: {text: TextDefinition, color: Color
         dark: '#9f0000',
       },
       error: {
-        primary: '#b00020',
+        primary: '#cf6679',
       },
       background: {
         primary: '#121212',
@@ -33,6 +33,7 @@ export const Colours: { [key in Brightness]: {text: TextDefinition, color: Color
       secondary: '#000000',
       error: '#ffffff',
       surface: '#ffffff',
+      label: '#999999',
     },
   },
   light: {
@@ -54,6 +55,7 @@ export const Colours: { [key in Brightness]: {text: TextDefinition, color: Color
         primary: '#ffffff',
       },
       surface: {
+        dark: '#e0e0e0',
         primary: '#ffffff',
       },
     },
@@ -63,6 +65,7 @@ export const Colours: { [key in Brightness]: {text: TextDefinition, color: Color
       secondary: '#ffffff',
       error: '#ffffff',
       surface: '#000000',
+      label: '#626262'
     },
   },
 };
@@ -81,15 +84,15 @@ export const backgroundColor: { [key in Brightness]: { [key in Elevation]: Pick<
     24: {backgroundColor: '#353535'},
   },
   light: {
-    0: {backgroundColor: '#ffffff'},
-    1: {backgroundColor: '#ffffff'},
-    2: {backgroundColor: '#ffffff'},
-    3: {backgroundColor: '#ffffff'},
-    4: {backgroundColor: '#ffffff'},
-    6: {backgroundColor: '#ffffff'},
-    8: {backgroundColor: '#ffffff'},
-    12: {backgroundColor: '#ffffff'},
-    16: {backgroundColor: '#ffffff'},
-    24: {backgroundColor: '#ffffff'},
+    0: {},
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+    6: {},
+    8: {},
+    12: {},
+    16: {},
+    24: {},
   },
 }
