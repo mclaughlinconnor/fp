@@ -1,7 +1,8 @@
 import Realm from 'realm';
-import {NibSize} from '../../components/Nib/Nib';
 import UUID = Realm.BSON.UUID;
 import {PenModel} from './PenModel';
+
+export type NibSize = 'extra fine' | 'fine' | 'medium' | 'broad' | '1.1mm stub';
 
 export class NibModel extends Realm.Object {
 
