@@ -2,28 +2,25 @@ import {FlatList, StyleSheet} from 'react-native';
 import {View} from '../../Styling/Themed';
 import PenListItem from './PenListItem';
 import {useCallback, useEffect, useState} from 'react';
-import {useRealm} from '../../../hooks/useRealm';
 import {PenModel} from '../../../db/models/PenModel';
+import {Props} from '../PenNavigator';
+import {realmInstance} from '../../../db/Realm';
 
-export default function PenList() {
+export default function PenList({route, navigation}: Props) {
   const [pens, setPens] = useState<Realm.Results<PenModel> | []>([]);
 
-  const {realmRef, isReady} = useRealm();
-
   useEffect(() => {
-    if (!realmRef.current || !isReady) {
+    if (!realmInstance) {
       return;
     }
 
-    const realm = realmRef.current;
-
-    const penResults: Realm.Results<PenModel> = realm.objects('PenModel');
+    const penResults: Realm.Results<PenModel> = realmInstance.objects('PenModel');
     if (penResults?.length) {
       setPens(penResults);
     }
 
     penResults.addListener(() => {
-      setPens(realm.objects('PenModel'));
+      setPens(realmInstance.objects('PenModel'));
     });
 
     return () => {
@@ -31,26 +28,25 @@ export default function PenList() {
 
       setPens([]);
     };
-  }, [isReady, realmRef]);
+  }, [realmInstance]);
 
   const handleAddPen = useCallback(
     (pen: PenModel): void => {
-      const realm = realmRef.current;
-      realm?.write(() => {
-        realm?.create('PenModel', PenModel.generate(pen));
+      realmInstance?.write(() => {
+        realmInstance?.create('PenModel', PenModel.generate(pen));
       });
     },
-    [realmRef]
+    [realmInstance]
   );
 
   const handleDeletePen = useCallback(
     (pen: PenModel): void => {
-      const realm = realmRef.current;
+      const realm = realmInstance;
       realm?.write(() => {
         realm?.delete(pen);
       });
     },
-    [realmRef]
+    [realmInstance]
   );
 
   const styles = StyleSheet.create({

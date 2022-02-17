@@ -12,10 +12,10 @@ import {ColorSchemeName} from 'react-native';
 
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
 import {RootStackParamList, RootTabParamList} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import {Colours} from '../styles/Colours';
+import PenNavigator from '../components/Pen/PenNavigator';
 
 export default function Navigation({colorScheme}: {colorScheme: ColorSchemeName}) {
   return (<NavigationContainer
@@ -48,7 +48,7 @@ function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (<BottomTab.Navigator
-    initialRouteName="TabOne"
+    initialRouteName="Pen"
     screenOptions={{
       tabBarActiveTintColor: Colours[colorScheme].color.primary.light,
       tabBarStyle: {
@@ -57,8 +57,8 @@ function BottomTabNavigator() {
       },
     }}>
     <BottomTab.Screen
-      name="TabOne"
-      component={TabOneScreen}
+      name="Pen"
+      component={PenNavigator}
       options={{
         title: 'Pen List',
         tabBarIcon: ({color}) => <MCITabBarIcon name="fountain-pen-tip" color={color}/>,
