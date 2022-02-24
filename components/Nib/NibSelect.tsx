@@ -32,7 +32,6 @@ export function NibSelect({label, data, onSelect}: Props) {
       flexDirection: 'row',
       alignItems: 'center',
       height: 48,
-      zIndex: 1,
       borderBottomColor: colourSvc.getTextColour(),
       borderBottomWidth: 2,
       backgroundColor: colourSvc.getColour(undefined, 'surface', 'dark'),

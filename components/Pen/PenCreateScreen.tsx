@@ -7,6 +7,8 @@ import {NibSelect} from '../Nib/NibSelect';
 import {ColourService} from '../../styles/ColourService';
 import {TextInput} from '../Styling/TextInput';
 import {realmInstance} from '../../db/Realm';
+import CameraInput from '../Styling/Camera/CameraInput';
+import {CameraCapturedPicture} from 'expo-camera';
 
 export default function PenCreateScreen({}) {
   const colourSvc = new ColourService({});
@@ -14,13 +16,12 @@ export default function PenCreateScreen({}) {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      flexDirection: 'column'
     },
     create: {
-      position: 'absolute',
-      bottom: 16,
-      left: 16,
-      right: 16,
-      marginVertical: 'auto',
+      marginTop: 'auto',
+      marginBottom: 12,
+      marginHorizontal: 16,
     }
   });
 
@@ -28,6 +29,7 @@ export default function PenCreateScreen({}) {
   const [colour, onChangeColour] = useState('');
   const [selectedNib, onChangeSelectedNib] = useState<NibModel | null>(null);
   const [dbNibs, onChangeDbNibs] = useState<Realm.Results<NibModel> | []>([]);
+  const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
 
   const addPen = (): void => {
     if (!colour || !name || !selectedNib) {
@@ -98,6 +100,7 @@ export default function PenCreateScreen({}) {
       <View style={{marginHorizontal: 16, marginTop: 12}}>
         <NibSelect label={'Select nib...'} data={dbNibs.map(generateNibItems)} onSelect={onChangeSelectedNib}/>
       </View>
+      <CameraInput onPhotoSave={onChangePhoto}/>
       <View style={styles.create}>
         <Button title={'Create'} onPress={addPen} color={colourSvc.getColour(undefined, 'primary')}/>
       </View>

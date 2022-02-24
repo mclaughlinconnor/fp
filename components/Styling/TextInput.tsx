@@ -8,7 +8,7 @@ import {
   TextStyle,
   ViewStyle,
 } from "react-native";
-import {ColourService, OVER_ALL} from '../../styles/ColourService';
+import {ColourService} from '../../styles/ColourService';
 
 interface Props {
   style?: TextStyle;
@@ -19,6 +19,8 @@ interface Props {
 
 export function TextInput({style, value, onChangeText, placeholder}: Props) {
   const colourSvc = new ColourService({});
+
+  const inputElevation = 1;
 
   const styles = StyleSheet.create({
     container: {
@@ -36,7 +38,7 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
       paddingRight: 12,
       fontSize: 16,
       backgroundColor: colourSvc.getColour(undefined, 'surface', 'dark'),
-      ...colourSvc.getViewElevationStyle(1) as ViewStyle,
+      ...colourSvc.getViewElevationStyle(inputElevation) as ViewStyle,
       ...colourSvc.getTextColourStyle(),
     },
     label: {
@@ -49,7 +51,7 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
       left: 16 + 16, // Overall padding + Label padding
       right: 12 + 16, // Overall padding + Label padding
       position: 'absolute',
-      elevation: OVER_ALL,
+      elevation: inputElevation + 1,
     },
   });
 
