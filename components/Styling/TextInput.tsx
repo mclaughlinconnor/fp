@@ -55,8 +55,6 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
 
   const moveText = useRef(new Animated.Value(0)).current;
 
-  console.log(colourSvc.getColour(undefined, 'surface', 'dark'));
-
   useEffect(() => {
     if (value) {
       moveTextTop();

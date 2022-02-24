@@ -45,7 +45,6 @@ export default function PenScreen({route, navigation}: Props) {
 
           if (!nibs || !nibs.length) {
             nibs = pen.nibs!.map((nib)  => {
-              console.log('created');
               return realm?.create('NibModel', NibModel.generate(nib));
             })
           }
