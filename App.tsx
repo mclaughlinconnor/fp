@@ -10,6 +10,7 @@ import Navigation from './navigation';
 // Warning because I'm using weird versions of Expo SDK and React-Native to use Realm
 LogBox.ignoreLogs([
   "Overwriting fontFamily style attribute preprocessor",
+  'Setting a timer for a long period of time'
 ]);
 
 export default function App() {

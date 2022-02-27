@@ -44,8 +44,7 @@
           "icon": "./assets/images/icon.png",
           "color": "#ffffff"
         }
-      ],
-      "@react-native-firebase/app"
+      ]
     ]
   }
 }
