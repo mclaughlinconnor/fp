@@ -7,6 +7,7 @@ import {NibModel} from '../../db/models/NibModel';
 import {Props} from './PenNavigator';
 import {ColourService} from '../../styles/ColourService';
 import {realmInstance} from '../../db/Realm';
+import {FileModel} from '../../db/models/FileModel';
 
 export default function PenScreen({route, navigation}: Props) {
   const colourSvc = new ColourService({});
@@ -42,6 +43,18 @@ export default function PenScreen({route, navigation}: Props) {
 
             return acc;
           }, [] as NibModel[]);
+
+          let image: FileModel;
+          if (pen.image) {
+            image = realm?.objectForPrimaryKey('FileModel', pen.image._id) as FileModel;
+
+            if (!image) {
+              image = realm?.create('FileModel', FileModel.generate(pen.image)) as FileModel
+            }
+
+            pen.image = image;
+          }
+
 
           if (!nibs || !nibs.length) {
             nibs = pen.nibs!.map((nib)  => {

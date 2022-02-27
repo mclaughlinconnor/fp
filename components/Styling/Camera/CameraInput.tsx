@@ -59,8 +59,10 @@ export default function CameraInput({onPhotoSave}: Props) {
   />
 
   return (
-    <View style={[styles.container, (startCamera) ? styles.camera : undefined]}>
-      {startCamera ? (cameraContainer) : (cameraButton)}
+    <View style={styles.container}>
+      <View style={(startCamera) ? styles.camera : undefined}>
+        {startCamera ? (cameraContainer) : (cameraButton)}
+      </View>
     </View>
   )
 }
@@ -69,11 +71,9 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 12,
     marginHorizontal: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   camera: {
-    marginBottom: 12,
-    flex: 1,
+    aspectRatio: 1,
+    minWidth: '100%',
   }
 })

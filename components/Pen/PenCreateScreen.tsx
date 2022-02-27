@@ -9,6 +9,7 @@ import {TextInput} from '../Styling/TextInput';
 import {realmInstance} from '../../db/Realm';
 import CameraInput from '../Styling/Camera/CameraInput';
 import {CameraCapturedPicture} from 'expo-camera';
+import {FileModel} from '../../db/models/FileModel';
 
 export default function PenCreateScreen({}) {
   const colourSvc = new ColourService({});
@@ -31,16 +32,19 @@ export default function PenCreateScreen({}) {
   const [dbNibs, onChangeDbNibs] = useState<Realm.Results<NibModel> | []>([]);
   const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
 
-  const addPen = (): void => {
-    if (!colour || !name || !selectedNib) {
+  const addPen = async (): Promise<void> => {
+    if (!colour || !name || !selectedNib || !photo) {
       return;
     }
+
+    const file = await FileModel.uploadGenerate({}, photo.uri)
 
     const pen = {
       colour,
       name,
       nibs: [selectedNib],
-      icon: 'fountain-pen-tip'
+      icon: 'fountain-pen-tip',
+      image: file,
     } as Partial<PenModel>;
 
     const realm = realmInstance;

@@ -20,6 +20,9 @@ export function CameraView({cameraRef, capturePhoto}: Props) {
     },
     container: {
       flex: 1,
+      maxWidth: '100%',
+      marginBottom: 'auto',
+      aspectRatio: 1,
     },
     capture: {
       width: 70,
@@ -45,7 +48,7 @@ export function CameraView({cameraRef, capturePhoto}: Props) {
   })
 
   return (
-    <Camera style={cameraViewStyles.container} ref={cameraRef} useCamera2Api={true}>
+    <Camera style={cameraViewStyles.container} ref={cameraRef} useCamera2Api={true} ratio={'1:1'}>
       <View style={cameraViewStyles.captureContainerContainer}>
         <View style={cameraViewStyles.captureContainer}>
           <TouchableOpacity onPress={capturePhoto} style={cameraViewStyles.capture}/>

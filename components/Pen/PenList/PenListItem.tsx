@@ -1,4 +1,5 @@
 import {StyleSheet, ViewStyle} from 'react-native';
+import {Image} from "react-native-expo-image-cache";
 import {Text, View} from '../../Styling/Themed';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../../styles/ColourService';
@@ -57,12 +58,15 @@ export default function PenListItem({pen}: {pen: PenModel}) {
       .join(', ');
   }
 
-  return (<View style={styles.view} elevation={2}>
-    <MaterialCommunityIcons
+  const image = <Image style={{width: 100, height: 100, marginLeft: 12}} uri={pen.image.url} />;
+  const noImage = <MaterialCommunityIcons
       size={styles.icon.width}
       style={[styles.icon, colourSvc.getTextColourStyle()]}
       name={pen.icon}
-    />
+    />;
+
+  return (<View style={styles.view} elevation={2}>
+    {Boolean(pen.image) ? image : noImage}
     <View style={styles.data}>
       <Text style={styles.nib}>{nibNames(pen.nibs)}</Text>
       <Text style={styles.name}>{pen.name}</Text>

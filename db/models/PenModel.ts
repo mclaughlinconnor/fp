@@ -2,6 +2,7 @@ import Realm from 'realm';
 import {NibModel} from './NibModel';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ComponentProps} from 'react';
+import {FileModel} from './FileModel';
 
 export class PenModel extends Realm.Object {
 
@@ -15,6 +16,8 @@ export class PenModel extends Realm.Object {
 
   public nibs: NibModel[];
 
+  public image: FileModel;
+
   static generate(pen: Partial<PenModel>): PenModel {
     return {
       _id: pen._id || new Realm.BSON.UUID(),
@@ -22,6 +25,7 @@ export class PenModel extends Realm.Object {
       icon: pen.icon,
       name: pen.name,
       nibs: pen.nibs?.map(nib => NibModel.generate(nib)),
+      image: pen.image,
     } as PenModel;
   }
 
@@ -37,7 +41,8 @@ export class PenModel extends Realm.Object {
         type: 'linkingObjects',
         objectType: 'NibModel',
         property: 'pens'
-      }
+      },
+      image: 'FileModel?'
     }
   };
 }
