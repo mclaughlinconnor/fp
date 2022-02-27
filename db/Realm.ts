@@ -1,9 +1,14 @@
 import Realm from 'realm';
 import {PenModel} from './models/PenModel';
 import {NibModel} from './models/NibModel';
+import {FileModel} from './models/FileModel';
 
 const config = {
-  schema: [PenModel.schema, NibModel.schema],
+  schema: [
+    PenModel.schema,
+    NibModel.schema,
+    FileModel.schema,
+  ],
   deleteRealmIfMigrationNeeded: true,
 };
 
