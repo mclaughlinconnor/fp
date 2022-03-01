@@ -3,6 +3,7 @@ import {NotificationService} from '../../components/Notifications/NotificationSe
 import {NotificationContentInput} from 'expo-notifications';
 import {storage} from './Firebase';
 import {ReactNativeFirebase} from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
 
 type FailureHandler = (error: ReactNativeFirebase.NativeFirebaseError) => void;
 type SuccessHandler = (storageRef: FirebaseStorageTypes.Reference) => Promise<string>;
@@ -71,7 +72,12 @@ export async function upload(
   onFailure: FailureHandler = defaultFailureHandler,
   onProgress: ProgressHandler = defaultProgressHandler
 ): Promise<string> {
-  const storageRef = storage.ref(`images/pens/${filename}`);
+  let userId = auth().currentUser?.uid;
+  if (!userId) {
+    userId = 'anon'
+  }
+
+  const storageRef = storage.ref(`${userId}/images/pens/${filename}`);
 
   const uploadTask = storageRef.putFile(file)
 

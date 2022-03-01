@@ -5,7 +5,7 @@ import {FileModel} from '../db/models/FileModel';
 const file = {
   _id: new Realm.BSON.UUID('15c95d13-27cb-420f-88a7-464f23106058'),
   createdAt: new Date(),
-  url: 'https://firebasestorage.googleapis.com/v0/b/cm-fp-1b689.appspot.com/o/images%2Fpens%2F45c95d13-27cb-420f-88a7-464f23106058?alt=media&token=9eefe8b7-dd4c-417a-8154-e494ffb0cc30'
+  url: 'https://firebasestorage.googleapis.com/v0/b/cm-fp-1b689.appspot.com/o/vKcJPbGREshgUE5QapNS4aJivT62%2Fimages%2Fpens%2F545b8f21-c2ee-430d-8f2d-753c03ce9c6b?alt=media&token=479cd5d8-b82e-4add-b750-d4ffee98b5b4'
 } as FileModel;
 
 const jEF = {

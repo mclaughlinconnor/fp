@@ -8,7 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {DarkTheme, DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
-import {ColorSchemeName} from 'react-native';
+import {ColorSchemeName, TouchableOpacity} from 'react-native';
 
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -16,6 +16,8 @@ import {RootStackParamList, RootTabParamList} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import {Colours} from '../styles/Colours';
 import PenNavigator from '../components/Pen/PenNavigator';
+import {ColourService} from '../styles/ColourService';
+import {GoogleAuth} from '../db/Firebase/auth/google/google';
 
 export default function Navigation({colorScheme}: {colorScheme: ColorSchemeName}) {
   return (<NavigationContainer
@@ -46,6 +48,8 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const colourSvc = new ColourService({});
+  const googleAuthSvc = new GoogleAuth();
 
   return (<BottomTab.Navigator
     initialRouteName="Pen"
@@ -62,6 +66,11 @@ function BottomTabNavigator() {
       options={{
         title: 'Pen List',
         tabBarIcon: ({color}) => <MCITabBarIcon name="fountain-pen-tip" color={color}/>,
+        headerRight: () => (
+          <TouchableOpacity onPress={googleAuthSvc.logout}>
+            <MaterialCommunityIcons name={'logout'} size={24} style={{marginRight: 16, color: colourSvc.getTextColour(undefined, 'background')}}/>
+          </TouchableOpacity>
+        ),
       }}
     />
   </BottomTab.Navigator>);
