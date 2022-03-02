@@ -7,6 +7,7 @@ import {
   Animated,
   TextStyle,
   ViewStyle,
+  Pressable,
 } from "react-native";
 import {ColourService} from '../../styles/ColourService';
 
@@ -19,6 +20,8 @@ interface Props {
 
 export function TextInput({style, value, onChangeText, placeholder}: Props) {
   const colourSvc = new ColourService({});
+
+  const inputRef = useRef<DefaultTextInput>(null);
 
   const inputElevation = 1;
 
@@ -64,6 +67,7 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
   }, [])
 
   const onFocusHandler = () => {
+    inputRef.current?.focus();
     moveTextTop();
   };
 
@@ -112,16 +116,19 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
 
   return (
     <View style={styles.container}>
-      <DefaultTextInput
-        style={styles.input}
-        value={value}
-        onChangeText={onChangeText}
-        onFocus={onFocusHandler}
-        onBlur={onBlurHandler}
-      />
-      <Animated.View style={[styles.labelContainer, animStyle]}>
-        <Text style={styles.label}>{placeholder}</Text>
-      </Animated.View>
+      <Pressable onPress={onFocusHandler}>
+        <DefaultTextInput
+          style={styles.input}
+          value={value}
+          onChangeText={onChangeText}
+          onFocus={onFocusHandler}
+          onBlur={onBlurHandler}
+          ref={inputRef || undefined}
+        />
+        <Animated.View style={[styles.labelContainer, animStyle]}>
+          <Text style={styles.label}>{placeholder}</Text>
+        </Animated.View>
+      </Pressable>
     </View>
   );
 }
