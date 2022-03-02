@@ -3,10 +3,11 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {CompositeScreenProps, NavigatorScreenParams} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PenStackParamList} from './components/Pen/PenNavigator';
+import {NibStackParamList} from './components/Nib/NibNavigator';
 
 declare global {
   namespace ReactNavigation {
@@ -27,6 +28,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 
 export type RootTabParamList = {
   Pen: NavigatorScreenParams<PenStackParamList>;
+  Nib: NavigatorScreenParams<NibStackParamList>;
   TabTwo: undefined;
 };
 
