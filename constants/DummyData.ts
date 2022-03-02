@@ -71,84 +71,84 @@ const pF = {
 export const Pens: Partial<PenModel>[] = [
   {
     colour: 'white',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('4c2032bd-a3c7-4311-a4c5-e919596a8533'),
     name: 'LAMY Safari',
     nibs: [lM],
     image: file
   }, {
     colour: 'black',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('186b7588-f128-4af4-87a7-f7cd5a856a42'),
     name: 'LAMY Safari',
     nibs: [lS],
     image: file
   }, {
     colour: 'black',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('18249270-3e35-4669-861a-4d3e694cde20'),
     name: 'Jinhao 993 (Shark)',
     nibs: [jEF],
     image: file
   }, {
     colour: 'red',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('ff209d8f-818a-45fc-a049-e4463da2275c'),
     name: 'Jinhao 993 (Shark)',
     nibs: [jEF],
     image: file
   }, {
     colour: 'blue',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('2fea7cb0-e047-41d9-89fb-59aa8948bdcb'),
     name: 'Jinhao 993 (Shark)',
     nibs: [jEF],
     image: file
   }, {
     colour: 'white',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('e4abbd1f-960b-483e-8314-e49dc7e82b9c'),
     name: 'Jinhao 993 (Shark)',
     nibs: [jEF],
     image: file
   }, {
     colour: 'black',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('19c7f1d1-5276-4521-aa8a-7955bed84e25'),
     name: 'Jinhao x750',
     nibs: [jM],
     image: file
   }, {
     colour: 'gold/silver',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('0c3919bb-8a86-420c-8b12-7f2f9900f976'),
     name: 'Parker Sonnet',
     nibs: [pM],
     image: file
   }, {
     colour: 'black',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('d3a89e8a-c6e5-473c-b641-d2ae21da7366'),
     name: 'Cross Calais',
     nibs: [cM],
     image: file
   }, {
     colour: 'white/blue',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('b8f90d94-7980-49eb-a09b-b3987e258de7'),
     name: 'Kaweko Perkeo',
     nibs: [kM],
     image: file
   }, {
     colour: 'transparent',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('36b6c516-685c-48a3-b4d3-38209a192465'),
     name: 'Platinum Preppy',
     nibs: [pF],
     image: file
   }, {
     colour: 'transparent',
-    icon: 'fountain-pen-tip',
+    icon: 'fountain-pen',
     _id: new Realm.BSON.UUID('3070dc1d-79ae-4ede-9aca-4800640ca4ad'),
     name: 'TWISBI Go',
     nibs: [tB],
