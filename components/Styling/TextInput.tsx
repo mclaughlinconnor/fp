@@ -47,7 +47,7 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
     },
     labelContainer: {
       top: 24,
-      width: 100,
+      width: 200,
       left: 16 + 16, // Overall padding + Label padding
       right: 12 + 16, // Overall padding + Label padding
       position: 'absolute',
@@ -95,7 +95,7 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
   });
   const labelXOffset = moveText.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -12],
+    outputRange: [0, -24],
   });
   const labelYOffset = moveText.interpolate({
     inputRange: [0, 1],
