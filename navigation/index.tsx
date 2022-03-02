@@ -19,6 +19,7 @@ import PenNavigator from '../components/Pen/PenNavigator';
 import {ColourService} from '../styles/ColourService';
 import {GoogleAuth} from '../db/Firebase/auth/google/google';
 import NibNavigator from '../components/Nib/NibNavigator';
+import InkNavigator from '../components/Ink/InkNavigator';
 
 export default function Navigation({colorScheme}: {colorScheme: ColorSchemeName}) {
   return (<NavigationContainer
@@ -80,6 +81,19 @@ function BottomTabNavigator() {
       options={{
         title: 'Nib List',
         tabBarIcon: ({color}) => <MCITabBarIcon name="fountain-pen-tip" color={color}/>,
+        headerRight: () => (
+          <TouchableOpacity onPress={googleAuthSvc.logout}>
+            <MaterialCommunityIcons name={'logout'} size={24} style={{marginRight: 16, color: colourSvc.getTextColour(undefined, 'background')}}/>
+          </TouchableOpacity>
+        ),
+      }}
+    />
+    <BottomTab.Screen
+      name="Ink"
+      component={InkNavigator}
+      options={{
+        title: 'Ink List',
+        tabBarIcon: ({color}) => <MCITabBarIcon name="water" color={color}/>,
         headerRight: () => (
           <TouchableOpacity onPress={googleAuthSvc.logout}>
             <MaterialCommunityIcons name={'logout'} size={24} style={{marginRight: 16, color: colourSvc.getTextColour(undefined, 'background')}}/>

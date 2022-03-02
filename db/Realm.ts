@@ -2,12 +2,14 @@ import Realm from 'realm';
 import {PenModel} from './models/PenModel';
 import {NibModel} from './models/NibModel';
 import {FileModel} from './models/FileModel';
+import {InkModel} from './models/InkModel';
 
 const config = {
   schema: [
     PenModel.schema,
     NibModel.schema,
     FileModel.schema,
+    InkModel.schema,
   ],
   deleteRealmIfMigrationNeeded: true,
 };

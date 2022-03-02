@@ -3,6 +3,7 @@ import {NibModel} from './NibModel';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ComponentProps} from 'react';
 import {FileModel} from './FileModel';
+import {InkModel} from './InkModel';
 
 export class PenModel extends Realm.Object {
 
@@ -17,6 +18,8 @@ export class PenModel extends Realm.Object {
   public nibs: NibModel[];
 
   public image: FileModel;
+
+  public inks: InkModel[];
 
   static generate(pen: Partial<PenModel>): PenModel {
     return {
@@ -40,6 +43,11 @@ export class PenModel extends Realm.Object {
       nibs: {
         type: 'linkingObjects',
         objectType: 'NibModel',
+        property: 'pens'
+      },
+      ink: {
+        type: 'linkingObjects',
+        objectType: 'InkModel',
         property: 'pens'
       },
       image: 'FileModel?'

@@ -8,6 +8,7 @@ import {CompositeScreenProps, NavigatorScreenParams} from '@react-navigation/nat
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PenStackParamList} from './components/Pen/PenNavigator';
 import {NibStackParamList} from './components/Nib/NibNavigator';
+import {InkStackParamList} from './components/Ink/InkNavigator';
 
 declare global {
   namespace ReactNavigation {
@@ -29,6 +30,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 export type RootTabParamList = {
   Pen: NavigatorScreenParams<PenStackParamList>;
   Nib: NavigatorScreenParams<NibStackParamList>;
+  Ink: NavigatorScreenParams<InkStackParamList>;
   TabTwo: undefined;
 };
 
