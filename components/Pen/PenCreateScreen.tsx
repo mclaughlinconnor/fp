@@ -3,7 +3,7 @@ import {PenModel} from '../../db/models/PenModel';
 import {Button, SafeAreaView, StyleSheet} from 'react-native';
 import {NibModel} from '../../db/models/NibModel';
 import {View} from '../Styling/Themed';
-import {NibSelect} from '../Nib/NibSelect';
+import {DropdownSelect} from '../Styling/DropdownSelect';
 import {ColourService} from '../../styles/ColourService';
 import {TextInput} from '../Styling/TextInput';
 import {realmInstance} from '../../db/Realm';
@@ -102,7 +102,7 @@ export default function PenCreateScreen({}) {
         placeholder={'Pen colour'}
       />
       <View style={{marginHorizontal: 16, marginTop: 12}}>
-        <NibSelect label={'Select nib...'} data={dbNibs.map(generateNibItems)} onSelect={onChangeSelectedNib}/>
+        <DropdownSelect label={'Select nib...'} data={dbNibs.map(generateNibItems)} onSelect={onChangeSelectedNib}/>
       </View>
       <CameraInput onPhotoSave={onChangePhoto}/>
       <View style={styles.create}>

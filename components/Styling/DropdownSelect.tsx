@@ -1,25 +1,18 @@
 import React, {ReactElement, useEffect, useRef, useState} from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  Modal,
-  View, Pressable, ViewStyle, TextStyle, Animated, Easing,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, Modal, View, Pressable, ViewStyle, TextStyle, Animated, Easing} from 'react-native';
 import {ColourService} from '../../styles/ColourService';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {NibModel} from '../../db/models/NibModel';
 
 interface Props {
   label: string;
-  data: {label: string; value: NibModel}[];
-  onSelect?: ((nib: NibModel) => void) | undefined;
+  data: {label: string; value: any}[];
+  onSelect?: ((value: any) => void) | undefined;
 }
 
-export function NibSelect({label, data, onSelect}: Props) {
+export function DropdownSelect({label, data, onSelect}: Props) {
   const caretRotateAnim = useRef(new Animated.Value(1)).current;
 
-  const NibSelectButton = useRef<View>(null);
+  const StartButton = useRef<View>(null);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState<any>(undefined);
   const [dropdownTop, setDropdownTop] = useState(0);
@@ -85,11 +78,11 @@ export function NibSelect({label, data, onSelect}: Props) {
   }
 
   useEffect(() => {
-    NibSelectButton.current?.measureInWindow((x, y, width, height) => {
+    StartButton.current?.measureInWindow((x, y, width, height) => {
       setDropdownHorizontal(x);
       setDropdownTop(y+height);
     });
-  }, [NibSelectButton])
+  }, [StartButton])
 
   const openDropdown = (): void => {
     setVisible(true);
@@ -132,7 +125,7 @@ export function NibSelect({label, data, onSelect}: Props) {
   };
 
   return (
-    <Pressable ref={NibSelectButton} style={styles.button} onPress={toggleDropdown}>
+    <Pressable ref={StartButton} style={styles.button} onPress={toggleDropdown}>
       {renderDropdown()}
       <Text style={styles.buttonText}>
         {selected?.label || label}
