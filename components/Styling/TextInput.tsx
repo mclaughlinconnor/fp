@@ -7,7 +7,7 @@ import {
   Animated,
   TextStyle,
   ViewStyle,
-  Pressable,
+  Pressable, KeyboardType,
 } from "react-native";
 import {ColourService} from '../../styles/ColourService';
 
@@ -16,9 +16,10 @@ interface Props {
   onChangeText?: ((nib: string) => void) | undefined;
   value?: string;
   placeholder?: string;
+  keyboardType?: KeyboardType;
 }
 
-export function TextInput({style, value, onChangeText, placeholder}: Props) {
+export function TextInput({style, value, onChangeText, placeholder, keyboardType}: Props) {
   const colourSvc = new ColourService({});
 
   const inputRef = useRef<DefaultTextInput>(null);
@@ -120,6 +121,7 @@ export function TextInput({style, value, onChangeText, placeholder}: Props) {
         <DefaultTextInput
           style={styles.input}
           value={value}
+          keyboardType={keyboardType || 'default'}
           onChangeText={onChangeText}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
