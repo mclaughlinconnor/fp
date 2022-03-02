@@ -20,10 +20,10 @@ export class FileModel extends Realm.Object {
     } as FileModel;
   }
 
-  static async uploadGenerate(file: Partial<FileModel>, uri: string): Promise<FileModel> {
+  static async uploadGenerate(file: Partial<FileModel>, uri: string, fileType: 'images', directory: string): Promise<FileModel> {
     const id =  file._id || new Realm.BSON.UUID();
 
-    const downloadURL = await upload(id.toHexString(), uri)
+    const downloadURL = await upload(fileType, directory,id.toHexString(), uri)
 
     return {
       _id: id,

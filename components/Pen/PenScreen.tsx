@@ -58,6 +58,16 @@ export default function PenScreen({route, navigation}: Props) {
 
           if (!nibs || !nibs.length) {
             nibs = pen.nibs!.map((nib)  => {
+              let nibImage: FileModel;
+              if (nib.image) {
+                nibImage = realm?.objectForPrimaryKey('FileModel', nib.image._id) as FileModel;
+
+                if (!image) {
+                  image = realm?.create('FileModel', FileModel.generate(nib.image)) as FileModel
+                }
+
+                nib.image = nibImage;
+              }
               return realm?.create('NibModel', NibModel.generate(nib));
             })
           }

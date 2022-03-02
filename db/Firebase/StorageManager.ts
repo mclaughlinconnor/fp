@@ -66,6 +66,8 @@ async function uploadStarted() {
 }
 
 export async function upload(
+  filetype: 'images',
+  directory: string,
   filename: string,
   file: string,
   onSuccess: SuccessHandler = defaultSuccessHandler,
@@ -77,7 +79,7 @@ export async function upload(
     userId = 'anon'
   }
 
-  const storageRef = storage.ref(`${userId}/images/pens/${filename}`);
+  const storageRef = storage.ref(`${userId}/${filetype}/${directory}/${filename}`);
 
   const uploadTask = storageRef.putFile(file)
 

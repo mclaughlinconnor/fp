@@ -37,7 +37,7 @@ export default function PenCreateScreen({}) {
       return;
     }
 
-    const file = await FileModel.uploadGenerate({}, photo.uri)
+    const file = await FileModel.uploadGenerate({}, photo.uri, 'images', 'pens')
 
     const pen = {
       colour,

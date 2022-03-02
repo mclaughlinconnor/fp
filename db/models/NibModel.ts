@@ -1,8 +1,11 @@
 import Realm from 'realm';
 import UUID = Realm.BSON.UUID;
 import {PenModel} from './PenModel';
+import {FileModel} from './FileModel';
 
-export type NibSize = 'extra fine' | 'fine' | 'medium' | 'broad' | '1.1mm stub';
+const _NibSizes = ['extra fine', 'fine', 'medium', 'broad', '1.1mm stub'] as const;
+export type NibSize = typeof _NibSizes;
+export const NibSizes = _NibSizes as unknown as NibSize[];
 
 export class NibModel extends Realm.Object {
 
@@ -16,12 +19,15 @@ export class NibModel extends Realm.Object {
 
   public pens: PenModel[];
 
+  public image: FileModel;
+
   static generate(nib: Partial<NibModel>): NibModel {
     return {
       _id: nib._id || new Realm.BSON.UUID(),
       colour: nib.colour,
       manufacturer: nib.manufacturer,
       size: nib.size,
+      image: nib.image,
     } as NibModel;
   }
 
@@ -33,7 +39,8 @@ export class NibModel extends Realm.Object {
       colour: 'string',
       manufacturer: 'string',
       size: 'string',
-      pens: 'PenModel[]'
-    }
+      pens: 'PenModel[]',
+      image: 'FileModel?',
+    },
   };
 }

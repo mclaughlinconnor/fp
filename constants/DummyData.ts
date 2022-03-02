@@ -1,4 +1,4 @@
-import {NibModel} from '../db/models/NibModel';
+import {NibModel, NibSize} from '../db/models/NibModel';
 import {PenModel} from '../db/models/PenModel';
 import {FileModel} from '../db/models/FileModel';
 
@@ -11,56 +11,61 @@ const file = {
 const jEF = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('23cedeac-dede-4ac7-82c9-e9dc7f994498'),
-  size: 'extra fine',
+  size: 'extra fine' as unknown as NibSize,
   manufacturer: 'Jinhao',
+  image: file
 } as NibModel;
 const lM = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('014b5c46-44d8-402f-bbb9-30a80c763436'),
-  size: 'medium',
+  size: 'medium' as unknown as NibSize,
   manufacturer: 'Lamy',
 } as NibModel;
 const tB = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('cae95d64-5743-44ea-b6f3-1c487af4a1cf'),
-  size: 'broad',
+  size: 'broad' as unknown as NibSize,
   manufacturer: 'TWISBI',
+  image: file
 } as NibModel;
 const pM = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('c87eeabd-82f3-4eac-80b3-be482d9bc6b8'),
-  size: 'medium',
+  size: 'medium' as unknown as NibSize,
   manufacturer: 'Parker',
 } as NibModel;
 const cM = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('790e8830-ef79-459d-be9d-7d6a3732c36a'),
-  size: 'medium',
+  size: 'medium' as unknown as NibSize,
   manufacturer: 'Cross',
+  image: file
 } as NibModel;
 const lS = {
   colour: 'Black',
   _id: new Realm.BSON.UUID('201ffea3-1228-46fd-a263-91788ec16eec'),
-  size: '1.1mm stub',
+  size: '1.1mm stub' as unknown as NibSize,
   manufacturer: 'Lamy',
 } as NibModel;
 const jM = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('50a3b23c-b82c-4eb1-b463-fb0c77067aae'),
-  size: 'medium',
+  size: 'medium' as unknown as NibSize,
   manufacturer: 'Jinhao',
+  image: file
 } as NibModel;
 const kM = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('7dbdcc67-3e3a-4596-9869-f330f902047d'),
-  size: 'medium',
+  size: 'medium' as unknown as NibSize,
   manufacturer: 'Kaweko',
 } as NibModel;
 const pF = {
   colour: 'Silver',
   _id: new Realm.BSON.UUID('c4b4be7c-cccb-4405-bdd6-60608e098f8a'),
-  size: 'fine',
+  size: 'fine' as unknown as NibSize,
   manufacturer: 'Platinum',
+  image: file
 } as NibModel;
 
 export const Pens: Partial<PenModel>[] = [
