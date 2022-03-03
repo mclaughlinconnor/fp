@@ -27,13 +27,14 @@ export default function PenCreateScreen({}) {
   });
 
   const [name, onChangeName] = useState('');
+  const [manufacturer, onChangeManufacturer] = useState('');
   const [colour, onChangeColour] = useState('');
   const [selectedNib, onChangeSelectedNib] = useState<NibModel | null>(null);
   const [dbNibs, onChangeDbNibs] = useState<Realm.Results<NibModel> | []>([]);
   const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
 
   const addPen = async (): Promise<void> => {
-    if (!colour || !name || !selectedNib || !photo) {
+    if (!colour || !name || !selectedNib || !photo || !manufacturer) {
       return;
     }
 
@@ -45,6 +46,7 @@ export default function PenCreateScreen({}) {
       nibs: [selectedNib],
       icon: 'fountain-pen-tip',
       image: file,
+      manufacturer,
     } as Partial<PenModel>;
 
     const realm = realmInstance;
@@ -91,6 +93,11 @@ export default function PenCreateScreen({}) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TextInput
+        onChangeText={onChangeManufacturer}
+        value={manufacturer}
+        placeholder={'Pen manufacturer'}
+      />
       <TextInput
         onChangeText={onChangeName}
         value={name}

@@ -15,6 +15,8 @@ export class PenModel extends Realm.Object {
 
   public name!: string;
 
+  public manufacturer!: string;
+
   public nibs: NibModel[];
 
   public image: FileModel;
@@ -26,6 +28,7 @@ export class PenModel extends Realm.Object {
       _id: pen._id || new Realm.BSON.UUID(),
       colour: pen.colour,
       icon: pen.icon,
+      manufacturer: pen.manufacturer,
       name: pen.name,
       nibs: pen.nibs?.map(nib => NibModel.generate(nib)),
       image: pen.image,
@@ -40,6 +43,7 @@ export class PenModel extends Realm.Object {
       name: 'string',
       colour: 'string',
       icon: 'string',
+      manufacturer: 'string',
       nibs: {
         type: 'linkingObjects',
         objectType: 'NibModel',

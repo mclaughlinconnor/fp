@@ -69,7 +69,7 @@ export default function PenListItem({pen}: {pen: PenModel}) {
     {Boolean(pen.image) ? image : noImage}
     <View style={styles.data}>
       <Text style={styles.nib}>{nibNames(pen.nibs)}</Text>
-      <Text style={styles.name}>{pen.name}</Text>
+      <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
       <Text style={styles.color}>{pen.colour}</Text>
     </View>
   </View>);
