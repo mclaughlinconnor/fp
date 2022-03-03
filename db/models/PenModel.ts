@@ -53,4 +53,14 @@ export class PenModel extends Realm.Object {
       image: 'FileModel?'
     }
   };
+
+  public get currentNib() {
+    // A pen can only have one nib at a time
+    return this.nibs[0];
+  }
+
+  public get currentInk() {
+    // A pen can only have one ink at a time
+    return this.inks[0];
+  }
 }
