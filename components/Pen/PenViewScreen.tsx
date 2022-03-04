@@ -1,6 +1,6 @@
 import {Text, View} from '../Styling/Themed';
 import {Image} from 'react-native-expo-image-cache';
-import {StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {PenStackRouteType} from './PenNavigator';
 import {useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
@@ -96,7 +96,7 @@ export default function PenViewScreen() {
   );
 
   return (
-    <View>
+    <ScrollView>
       <View elevation={4}>
         <Image style={styles.headerImage} uri={pen.image.url}/>
       </View>
@@ -105,6 +105,6 @@ export default function PenViewScreen() {
         {currentNib ? nibView : null}
         {currentInk ? inkView : null}
       </View>
-    </View>
+    </ScrollView>
   )
 }
