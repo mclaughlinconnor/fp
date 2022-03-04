@@ -1,11 +1,14 @@
-import {StyleSheet, ViewStyle} from 'react-native';
+import {Pressable, StyleSheet, ViewStyle} from 'react-native';
 import {Image} from "react-native-expo-image-cache";
 import {Text, View} from '../../Styling/Themed';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../../styles/ColourService';
-import {PenModel} from '../../../db/models/PenModel';
 import {NibModel} from '../../../db/models/NibModel';
 import useColorScheme from '../../../hooks/useColorScheme';
+import React from 'react';
+import {PenModel} from '../../../db/models/PenModel';
+import {PenStackRouteType} from '../PenNavigator';
+import {useNavigation} from '@react-navigation/native';
 
 const colourSvc = new ColourService({});
 
@@ -22,6 +25,7 @@ const verticalLayout: ViewStyle = {
 
 export default function PenListItem({pen}: {pen: PenModel}) {
   const theme = useColorScheme();
+  const navigation = useNavigation<PenStackRouteType['PenList']['navigation']>();
 
   const styles = StyleSheet.create({
     icon: {
@@ -58,6 +62,10 @@ export default function PenListItem({pen}: {pen: PenModel}) {
       .join(', ');
   }
 
+  const goToPen = () => {
+    return navigation.navigate('PenView', {penId: pen._id.toHexString()})
+  }
+
   const image = <Image style={{width: 100, height: 100, marginLeft: 12}} uri={pen.image.url} />;
   const noImage = <MaterialCommunityIcons
       size={styles.icon.width}
@@ -65,12 +73,16 @@ export default function PenListItem({pen}: {pen: PenModel}) {
       name={pen.icon}
     />;
 
-  return (<View style={styles.view} elevation={2}>
-    {Boolean(pen.image) ? image : noImage}
-    <View style={styles.data}>
-      <Text style={styles.nib}>{nibNames(pen.nibs)}</Text>
-      <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
-      <Text style={styles.color}>{pen.colour}</Text>
-    </View>
-  </View>);
+  return (
+    <Pressable onPress={goToPen}>
+      <View style={styles.view} elevation={2}>
+        {Boolean(pen.image) ? image : noImage}
+        <View style={styles.data}>
+          <Text style={styles.nib}>{nibNames(pen.nibs)}</Text>
+          <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
+          <Text style={styles.color}>{pen.colour}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
 }
