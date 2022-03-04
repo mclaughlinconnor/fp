@@ -17,11 +17,13 @@ export class PenModel extends Realm.Object {
 
   public manufacturer!: string;
 
-  public nibs: NibModel[];
+  // Technically an array, so has to be plural
+  public nibs: NibModel[] = [];
 
   public image: FileModel;
 
-  public inks: InkModel[];
+  // Technically an array, so has to be plural
+  public inks: InkModel[] = [];
 
   static generate(pen: Partial<PenModel>): PenModel {
     return {
@@ -49,7 +51,7 @@ export class PenModel extends Realm.Object {
         objectType: 'NibModel',
         property: 'pens'
       },
-      ink: {
+      inks: {
         type: 'linkingObjects',
         objectType: 'InkModel',
         property: 'pens'
@@ -58,13 +60,13 @@ export class PenModel extends Realm.Object {
     }
   };
 
-  public get currentNib() {
+  public static currentNib(pen: PenModel) {
     // A pen can only have one nib at a time
-    return this.nibs[0];
+    return pen?.nibs[0];
   }
 
-  public get currentInk() {
+  public static currentInk(pen: PenModel) {
     // A pen can only have one ink at a time
-    return this.inks[0];
+    return pen?.inks[0];
   }
 }
