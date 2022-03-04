@@ -4,12 +4,11 @@ import {Pens} from '../../constants/DummyData';
 import {PenModel} from '../../db/models/PenModel';
 import {Button, SafeAreaView, StyleSheet} from 'react-native';
 import {NibModel} from '../../db/models/NibModel';
-import {Props} from './PenNavigator';
 import {ColourService} from '../../styles/ColourService';
 import {realmInstance} from '../../db/Realm';
 import {FileModel} from '../../db/models/FileModel';
 
-export default function PenScreen({route, navigation}: Props) {
+export default function PenScreen() {
   const colourSvc = new ColourService({});
 
   const styles = StyleSheet.create({
@@ -84,7 +83,7 @@ export default function PenScreen({route, navigation}: Props) {
     <SafeAreaView style={styles.container}>
       <Button title={'Reset Database'} onPress={resetDatabase} color={colourSvc.getColour(undefined, 'primary')}/>
       <Button title={'Populate Dummy Data'} onPress={populateDummyData} color={colourSvc.getColour(undefined, 'primary')}/>
-      <PenList navigation={navigation} route={route}/>
+      <PenList/>
     </SafeAreaView>
   );
 }

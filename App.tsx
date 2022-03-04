@@ -1,5 +1,4 @@
 import 'expo-dev-client';
-import Navigation from './navigation';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import {LogBox} from 'react-native';
@@ -9,6 +8,7 @@ import {useEffect, useState} from 'react';
 import {GoogleAuthSigninButton} from './db/Firebase/auth/google/GoogleAuthSigninButton';
 import {View} from './components/Styling/Themed';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import Navigation from './navigation/Navigator';
 
 // Warning because I'm using weird versions of Expo SDK and React-Native to use Realm
 LogBox.ignoreLogs([

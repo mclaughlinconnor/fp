@@ -1,16 +1,35 @@
 import {createNativeStackNavigator, NativeStackScreenProps} from '@react-navigation/native-stack';
 import NibScreen from './NibScreen';
 import NibCreateScreen from './NibCreateScreen';
-import {RootTabParamList} from '../../types';
+import {RootTabParamList} from '../../navigation/types';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 export type NibStackParamList = {
   NibList: undefined;
   NibCreate: undefined;
 };
 
+export type NibStackRouteType = {
+  NibList: NativeStackScreenProps<NibStackParamList, 'NibList'>
+  NibCreate: NativeStackScreenProps<NibStackParamList, 'NibCreate'>
+}
+
 export type Props = NativeStackScreenProps<RootTabParamList, 'Nib'>;
 
 const NibStack = createNativeStackNavigator<NibStackParamList>();
+
+export function getNibHeaderTitle({route}: Props) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Nib List';
+
+  switch (routeName) {
+    case 'NibList':
+      return 'Nib List'
+    case 'NibCreate':
+      return 'Nib Create'
+  }
+
+  return routeName;
+}
 
 export default function NibNavigator() {
   return (

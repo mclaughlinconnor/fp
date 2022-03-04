@@ -3,11 +3,14 @@ import {View} from '../../Styling/Themed';
 import {FloatingActionButton} from '../../Styling/FloatingActionButton';
 import InkListItem from './InkListItem';
 import {useEffect, useState} from 'react';
-import {Props} from '../InkNavigator';
+import {InkStackRouteType} from '../InkNavigator';
 import {realmInstance} from '../../../db/Realm';
 import {InkModel} from '../../../db/models/InkModel';
+import {useNavigation} from '@react-navigation/native';
 
-export default function InkList({navigation}: Props) {
+export default function InkList() {
+  const navigation = useNavigation<InkStackRouteType['InkList']['navigation']>();
+
   const [inks, setInks] = useState<Realm.Results<InkModel> | []>([]);
 
   useEffect(() => {
@@ -52,6 +55,6 @@ export default function InkList({navigation}: Props) {
       renderItem={renderItem}
       keyExtractor={item => item._id.toString()}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('Ink', {screen: 'InkCreate'})}/>
+    <FloatingActionButton onPress={() => navigation.navigate('InkCreate')}/>
   </View>);
 }

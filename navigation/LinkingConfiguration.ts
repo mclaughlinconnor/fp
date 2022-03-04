@@ -1,28 +1,31 @@
 import {LinkingOptions} from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import {RootStackParamList} from '../types';
+import {RootTabParamList} from './types';
 
-const linking: LinkingOptions<RootStackParamList> = {
+const linking: LinkingOptions<RootTabParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
-      Root: {
+      Pen: {
         screens: {
-          Pen: {
-            screens: {
-              PenList: 'two',
-            },
-          },
-          TabTwo: {
-            screens: {
-              TabTwoScreen: 'two',
-            },
-          },
+          PenCreate: 'create',
+          PenList: 'list',
+          PenView: 'view',
         },
       },
-      Modal: 'modal',
-      NotFound: '*',
+      Ink: {
+        screens: {
+          InkCreate: 'create',
+          InkList: 'list'
+        },
+      },
+      Nib: {
+        screens: {
+          NibCreate: 'create',
+          NibList: 'list',
+        },
+      },
     },
   },
 };

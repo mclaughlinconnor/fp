@@ -3,11 +3,14 @@ import {View} from '../../Styling/Themed';
 import {FloatingActionButton} from '../../Styling/FloatingActionButton';
 import NibListItem from './NibListItem';
 import {useEffect, useState} from 'react';
-import {Props} from '../NibNavigator';
+import {NibStackRouteType} from '../NibNavigator';
 import {realmInstance} from '../../../db/Realm';
 import {NibModel} from '../../../db/models/NibModel';
+import {useNavigation} from '@react-navigation/native';
 
-export default function NibList({navigation}: Props) {
+export default function NibList() {
+  const navigation = useNavigation<NibStackRouteType['NibList']['navigation']>();
+
   const [nibs, setNibs] = useState<Realm.Results<NibModel> | []>([]);
 
   useEffect(() => {
@@ -52,6 +55,6 @@ export default function NibList({navigation}: Props) {
       renderItem={renderItem}
       keyExtractor={item => item._id.toString()}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('Nib', {screen: 'NibCreate'})}/>
+    <FloatingActionButton onPress={() => navigation.navigate('NibCreate')}/>
   </View>);
 }

@@ -4,10 +4,13 @@ import {FloatingActionButton} from '../../Styling/FloatingActionButton';
 import PenListItem from './PenListItem';
 import {useEffect, useState} from 'react';
 import {PenModel} from '../../../db/models/PenModel';
-import {Props} from '../PenNavigator';
 import {realmInstance} from '../../../db/Realm';
+import {PenStackRouteType} from '../PenNavigator';
+import {useNavigation} from '@react-navigation/native';
 
-export default function PenList({navigation}: Props) {
+export default function PenList() {
+  const navigation = useNavigation<PenStackRouteType['PenList']['navigation']>();
+
   const [pens, setPens] = useState<Realm.Results<PenModel> | []>([]);
 
   useEffect(() => {
@@ -52,6 +55,6 @@ export default function PenList({navigation}: Props) {
       renderItem={renderItem}
       keyExtractor={item => item._id.toString()}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('Pen', {screen: 'PenCreate'})}/>
+    <FloatingActionButton onPress={() => navigation.navigate('PenCreate')}/>
   </View>);
 }
