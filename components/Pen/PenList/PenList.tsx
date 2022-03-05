@@ -55,6 +55,6 @@ export default function PenList() {
       renderItem={renderItem}
       keyExtractor={item => item._id.toString()}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('PenCreate')}/>
+    <FloatingActionButton onPress={() => navigation.navigate('PenCreate', {})}/>
   </View>);
 }

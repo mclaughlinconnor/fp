@@ -7,7 +7,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 export type PenStackParamList = {
   PenList: undefined;
-  PenCreate: undefined;
+  PenCreate: {penId?: string};
   PenView: {penId: string};
 };
 

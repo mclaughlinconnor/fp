@@ -65,7 +65,7 @@ export function TextInput({style, value, onChangeText, placeholder, keyboardType
     if (value) {
       moveTextTop();
     }
-  }, [])
+  }, [value])
 
   const onFocusHandler = () => {
     inputRef.current?.focus();

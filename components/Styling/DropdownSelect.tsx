@@ -7,16 +7,24 @@ interface Props {
   label: string;
   data: {label: string; value: any}[];
   onSelect?: ((value: any) => void) | undefined;
+  defaultSelected?: any;
 }
 
-export function DropdownSelect({label, data, onSelect}: Props) {
+export function DropdownSelect({label, data, onSelect, defaultSelected}: Props) {
   const caretRotateAnim = useRef(new Animated.Value(1)).current;
 
   const StartButton = useRef<View>(null);
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState<any>(undefined);
+  const [selected, setSelected] = useState<any>();
   const [dropdownTop, setDropdownTop] = useState(0);
   const [dropdownHorizontal, setDropdownHorizontal] = useState(0);
+
+  useEffect(() => {
+    if (defaultSelected) {
+      setSelected(defaultSelected);
+    }
+  }, [defaultSelected])
+
 
   const colourSvc = new ColourService({});
 
