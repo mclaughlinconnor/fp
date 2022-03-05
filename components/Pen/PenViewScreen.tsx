@@ -62,7 +62,7 @@ export default function PenViewScreen() {
           <Text>Ink volume: {pen.ink.volume}ml</Text>
           <Text>Ink colour: {pen.ink.colour}</Text>
         </View>
-        <Image style={styles.image} uri={pen.image.url}/>
+        <Image style={styles.image} uri={pen.ink.image.url}/>
       </View>
     </View>
   );
