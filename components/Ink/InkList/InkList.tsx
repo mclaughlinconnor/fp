@@ -18,13 +18,13 @@ export default function InkList() {
       return;
     }
 
-    const inkResults: Realm.Results<InkModel> = realmInstance.objects('InkModel');
+    const inkResults: Realm.Results<InkModel> = realmInstance.objects('Ink');
     if (inkResults?.length) {
       setInks(inkResults);
     }
 
     inkResults.addListener(() => {
-      setInks(realmInstance.objects('InkModel'));
+      setInks(realmInstance.objects('Ink'));
     });
 
     return () => {

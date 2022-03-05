@@ -55,7 +55,7 @@ export default function PenCreateScreen({}) {
 
     const realm = realmInstance;
     realm?.write(() => {
-      realm?.create('InkModel', InkModel.generate(ink));
+      realm?.create('Ink', InkModel.generate(ink));
     });
   }
 

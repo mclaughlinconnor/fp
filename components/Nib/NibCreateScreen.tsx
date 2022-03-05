@@ -51,7 +51,7 @@ export default function NibCreateScreen({}) {
 
     const realm = realmInstance;
     realm?.write(() => {
-      realm?.create('NibModel', NibModel.generate(nib));
+      realm?.create('Nib', NibModel.generate(nib));
     });
   }
 

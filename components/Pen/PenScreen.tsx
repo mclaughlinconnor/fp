@@ -35,10 +35,10 @@ export default function PenScreen() {
         Pens.forEach(pen => {
           let image: FileModel;
           if (pen.image) {
-            image = realm?.objectForPrimaryKey('FileModel', pen.image._id) as FileModel;
+            image = realm?.objectForPrimaryKey('File', pen.image._id) as FileModel;
 
             if (!image) {
-              image = realm?.create('FileModel', FileModel.generate(pen.image)) as FileModel
+              image = realm?.create('File', FileModel.generate(pen.image)) as FileModel
             }
 
             pen.image = image;
@@ -48,24 +48,24 @@ export default function PenScreen() {
           if (pen.nib) {
             let nibImage: FileModel;
             if (pen.nib.image) {
-              nibImage = realm?.objectForPrimaryKey('FileModel', pen.nib.image._id) as FileModel;
+              nibImage = realm?.objectForPrimaryKey('File', pen.nib.image._id) as FileModel;
 
               if (!nibImage) {
-                nibImage = realm?.create('FileModel', FileModel.generate(pen.nib.image)) as FileModel
+                nibImage = realm?.create('File', FileModel.generate(pen.nib.image)) as FileModel
               }
 
               pen.nib.image = nibImage;
             }
 
-            nib = realm?.objectForPrimaryKey('NibModel', pen.nib?._id) as NibModel;
+            nib = realm?.objectForPrimaryKey('Nib', pen.nib?._id) as NibModel;
             if (!nib) {
-              nib = realm.create('NibModel', NibModel.generate(pen.nib));
+              nib = realm.create('Nib', NibModel.generate(pen.nib));
             }
             pen.nib = nib;
 
           }
 
-          realm?.create('PenModel', PenModel.generate(pen));
+          realm?.create('Pen', PenModel.generate(pen));
         })
       });
     },

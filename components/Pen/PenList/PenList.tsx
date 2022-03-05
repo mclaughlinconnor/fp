@@ -18,13 +18,13 @@ export default function PenList() {
       return;
     }
 
-    const penResults: Realm.Results<PenModel> = realmInstance.objects('PenModel');
+    const penResults: Realm.Results<PenModel> = realmInstance.objects('Pen');
     if (penResults?.length) {
       setPens(penResults);
     }
 
     penResults.addListener(() => {
-      setPens(realmInstance.objects('PenModel'));
+      setPens(realmInstance.objects('Pen'));
     });
 
     return () => {

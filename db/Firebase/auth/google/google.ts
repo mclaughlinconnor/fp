@@ -12,7 +12,7 @@ export class GoogleAuth extends Component<{}, {}> {
 
   public configure() {
     GoogleSignin.configure({
-      webClientId: '993118838626-99h2kgfq0o5tdl957bu0566gofepc2pb.apps.googleusercontent.com',
+      webClientId: 'x.apps.googleusercontent.com'
     });
   }
 
@@ -27,7 +27,7 @@ export class GoogleAuth extends Component<{}, {}> {
       console.error('play services are not available');
     }
 
-    const {idToken} = await GoogleSignin.signIn();
+    const {idToken} = await GoogleSignin.signIn()
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     await auth().signInWithCredential(googleCredential);

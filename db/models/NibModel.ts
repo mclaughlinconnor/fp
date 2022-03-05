@@ -32,7 +32,7 @@ export class NibModel extends Realm.Object {
   }
 
   public static schema: Realm.ObjectSchema = {
-    name: 'NibModel',
+    name: 'Nib',
     primaryKey: '_id',
     properties: {
       _id: 'uuid',
@@ -41,10 +41,10 @@ export class NibModel extends Realm.Object {
       size: 'string',
       pens: {
         type: 'linkingObjects',
-        objectType: 'PenModel',
+        objectType: 'Pen',
         property: 'nib'
       },
-      image: 'FileModel?',
+      image: 'File?',
     },
   };
 }

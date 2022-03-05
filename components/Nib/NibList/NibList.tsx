@@ -18,13 +18,13 @@ export default function NibList() {
       return;
     }
 
-    const nibResults: Realm.Results<NibModel> = realmInstance.objects('NibModel');
+    const nibResults: Realm.Results<NibModel> = realmInstance.objects('Nib');
     if (nibResults?.length) {
       setNibs(nibResults);
     }
 
     nibResults.addListener(() => {
-      setNibs(realmInstance.objects('NibModel'));
+      setNibs(realmInstance.objects('Nib'));
     });
 
     return () => {

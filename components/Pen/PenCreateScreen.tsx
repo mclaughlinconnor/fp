@@ -33,7 +33,7 @@ export default function PenCreateScreen({}) {
 
   useEffect(() => {
     const uuid = new Realm.BSON.UUID(penId);
-    const pen = realmInstance?.objectForPrimaryKey('PenModel', uuid) as PenModel;
+    const pen = realmInstance?.objectForPrimaryKey('Pen', uuid) as PenModel;
     if (!pen) {
       return;
     }
@@ -97,7 +97,7 @@ export default function PenCreateScreen({}) {
     });
 
     realmInstance?.write(() => {
-      realmInstance?.create('PenModel', pen);
+      realmInstance?.create('Pen', pen);
     });
   }
 
@@ -106,8 +106,8 @@ export default function PenCreateScreen({}) {
       return;
     }
 
-    const nibResults: Realm.Results<NibModel> = realmInstance.objects('NibModel');
-    const inkResults: Realm.Results<InkModel> = realmInstance.objects('InkModel');
+    const nibResults: Realm.Results<NibModel> = realmInstance.objects('Nib');
+    const inkResults: Realm.Results<InkModel> = realmInstance.objects('Ink');
 
     if (nibResults?.length) {
       onChangeDbNibs(nibResults);
@@ -118,11 +118,11 @@ export default function PenCreateScreen({}) {
     }
 
     nibResults.addListener(() => {
-      onChangeDbNibs(realmInstance.objects('NibModel'));
+      onChangeDbNibs(realmInstance.objects('Nib'));
     });
 
     inkResults.addListener(() => {
-      onChangeDbInks(realmInstance.objects('InkModel'));
+      onChangeDbInks(realmInstance.objects('Ink'));
     });
 
     return () => {

@@ -37,7 +37,7 @@ export class PenModel extends Realm.Object {
   }
 
   public static schema: Realm.ObjectSchema = {
-    name: 'PenModel',
+    name: 'Pen',
     primaryKey: '_id',
     properties: {
       _id: 'uuid',
@@ -45,9 +45,9 @@ export class PenModel extends Realm.Object {
       colour: 'string',
       icon: 'string',
       manufacturer: 'string',
-      nib: 'NibModel',
-      ink: 'InkModel',
-      image: 'FileModel?'
+      nib: 'Nib',
+      ink: 'Ink',
+      image: 'File?',
     }
   };
 }

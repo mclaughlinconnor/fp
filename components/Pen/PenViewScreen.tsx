@@ -61,10 +61,10 @@ export default function PenViewScreen() {
 
   useEffect(() => {
     const uuid = new Realm.BSON.UUID(penId);
-    const pen = realmInstance.objectForPrimaryKey('PenModel', uuid) as PenModel;
+    const pen = realmInstance.objectForPrimaryKey('Pen', uuid) as PenModel;
 
     pen.addListener(() => {
-      setPen(realmInstance.objectForPrimaryKey('PenModel', uuid));
+      setPen(realmInstance.objectForPrimaryKey('Pen', uuid));
     });
   }, [realmInstance, penId])
 

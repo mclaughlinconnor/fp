@@ -31,7 +31,7 @@ export class InkModel extends Realm.Object {
   }
 
   public static schema: Realm.ObjectSchema = {
-    name: 'InkModel',
+    name: 'Ink',
     primaryKey: '_id',
     properties: {
       _id: 'uuid',
@@ -41,10 +41,10 @@ export class InkModel extends Realm.Object {
       volume: 'int',
       pens: {
         type: 'linkingObjects',
-        objectType: 'PenModel',
+        objectType: 'Pen',
         property: 'ink'
       },
-      image: 'FileModel?',
+      image: 'File?',
     },
   };
 }

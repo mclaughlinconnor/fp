@@ -33,7 +33,7 @@ export class FileModel extends Realm.Object {
   }
 
   public static schema: Realm.ObjectSchema = {
-    name: 'FileModel',
+    name: 'File',
     primaryKey: '_id',
     properties: {
       _id: 'uuid',
