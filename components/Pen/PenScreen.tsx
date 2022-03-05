@@ -33,16 +33,6 @@ export default function PenScreen() {
       const realm = realmInstance;
       realm?.write(() => {
         Pens.forEach(pen => {
-          let nibs: NibModel[] = pen.nibs!.reduce((acc, nib) => {
-            const queriedNib = realm?.objectForPrimaryKey('NibModel', nib._id) as NibModel;
-
-            if (queriedNib) {
-              acc.push(queriedNib);
-            }
-
-            return acc;
-          }, [] as NibModel[]);
-
           let image: FileModel;
           if (pen.image) {
             image = realm?.objectForPrimaryKey('FileModel', pen.image._id) as FileModel;
@@ -54,25 +44,28 @@ export default function PenScreen() {
             pen.image = image;
           }
 
+          let nib: NibModel;
+          if (pen.nib) {
+            let nibImage: FileModel;
+            if (pen.nib.image) {
+              nibImage = realm?.objectForPrimaryKey('FileModel', pen.nib.image._id) as FileModel;
 
-          if (!nibs || !nibs.length) {
-            nibs = pen.nibs!.map((nib)  => {
-              let nibImage: FileModel;
-              if (nib.image) {
-                nibImage = realm?.objectForPrimaryKey('FileModel', nib.image._id) as FileModel;
-
-                if (!image) {
-                  image = realm?.create('FileModel', FileModel.generate(nib.image)) as FileModel
-                }
-
-                nib.image = nibImage;
+              if (!nibImage) {
+                nibImage = realm?.create('FileModel', FileModel.generate(pen.nib.image)) as FileModel
               }
-              return realm?.create('NibModel', NibModel.generate(nib));
-            })
+
+              pen.nib.image = nibImage;
+            }
+
+            nib = realm?.objectForPrimaryKey('NibModel', pen.nib?._id) as NibModel;
+            if (!nib) {
+              nib = realm.create('NibModel', NibModel.generate(pen.nib));
+            }
+            pen.nib = nib;
+
           }
 
-          const createdPen: PenModel = realm?.create('PenModel', PenModel.generate(pen));
-          nibs.forEach(nib => nib.pens.push(createdPen));
+          realm?.create('PenModel', PenModel.generate(pen));
         })
       });
     },

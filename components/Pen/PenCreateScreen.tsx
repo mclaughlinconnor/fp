@@ -40,27 +40,17 @@ export default function PenCreateScreen({}) {
 
     const file = await FileModel.uploadGenerate({}, photo.uri, 'images', 'pens')
 
-    const pen = {
+    const pen = PenModel.generate({
       colour,
-      name,
-      nibs: [selectedNib],
       icon: 'fountain-pen-tip',
       image: file,
       manufacturer,
-    } as Partial<PenModel>;
+      name,
+      nib: selectedNib,
+    });
 
-    const realm = realmInstance;
-    realm?.write(() => {
-      const createdPen = realm?.create('PenModel', PenModel.generate(pen)) as PenModel;
-      let nibs = pen.nibs?.map(nib => {
-        if (nib._id) {
-          return realm.objectForPrimaryKey('NibModel', nib._id) as NibModel;
-        } else {
-          return realm?.create('NibModel', NibModel.generate(nib)) as NibModel;
-        }
-      })
-
-      nibs?.forEach(nib => nib.pens.push(createdPen));
+    realmInstance?.write(() => {
+      realmInstance?.create('PenModel', pen);
     });
   }
 
@@ -69,7 +59,7 @@ export default function PenCreateScreen({}) {
       return;
     }
 
-    const realm = realmInstance;
+    const nibResults: Realm.Results<NibModel> = realmInstance.objects('NibModel');
 
     const nibResults: Realm.Results<NibModel> = realm.objects('NibModel');
     if (nibResults?.length) {

@@ -3,7 +3,6 @@ import {Image} from "react-native-expo-image-cache";
 import {Text, View} from '../../Styling/Themed';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../../styles/ColourService';
-import {NibModel} from '../../../db/models/NibModel';
 import useColorScheme from '../../../hooks/useColorScheme';
 import React from 'react';
 import {PenModel} from '../../../db/models/PenModel';
@@ -56,12 +55,6 @@ export default function PenListItem({pen}: {pen: PenModel}) {
     },
   });
 
-  function nibNames(nibs: NibModel[]) {
-    return nibs
-      .map(nib => `${nib.manufacturer} ${nib.size}`)
-      .join(', ');
-  }
-
   const goToPen = () => {
     return navigation.navigate('PenView', {penId: pen._id.toHexString()})
   }
@@ -78,7 +71,7 @@ export default function PenListItem({pen}: {pen: PenModel}) {
       <View style={styles.view} elevation={2}>
         {Boolean(pen.image) ? image : noImage}
         <View style={styles.data}>
-          <Text style={styles.nib}>{nibNames(pen.nibs)}</Text>
+          <Text style={styles.nib}>{pen.nib.manufacturer} {pen.nib.size}</Text>
           <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
           <Text style={styles.color}>{pen.colour}</Text>
         </View>

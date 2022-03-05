@@ -53,32 +53,29 @@ export default function PenViewScreen() {
     return null;
   }
 
-  const currentNib = PenModel.currentNib(pen)
-  const currentInk = PenModel.currentInk(pen)
-
-  const inkView = !currentInk ? null : (
+  const inkView = !pen.ink ? null : (
     <View>
       <LinedHeading text={'Ink'}/>
       <View style={styles.content}>
         <View style={styles.data}>
-          <Text style={styles.name}>{currentInk.manufacturer} {currentInk.name}</Text>
-          <Text>Ink volume: {currentInk.volume}ml</Text>
-          <Text>Ink colour: {currentInk.colour}</Text>
+          <Text style={styles.name}>{pen.ink.manufacturer} {pen.ink.name}</Text>
+          <Text>Ink volume: {pen.ink.volume}ml</Text>
+          <Text>Ink colour: {pen.ink.colour}</Text>
         </View>
         <Image style={styles.image} uri={pen.image.url}/>
       </View>
     </View>
   );
 
-  const nibView = !currentNib ? null : (
+  const nibView = !pen.nib ? null : (
     <View>
       <LinedHeading text={'Nib'}/>
       <View style={styles.content}>
         <View style={styles.data}>
-          <Text style={styles.name}>{currentNib.manufacturer} {currentNib.size}</Text>
-          <Text>Size: {currentNib.colour}</Text>
+          <Text style={styles.name}>{pen.nib.manufacturer} {pen.nib.size}</Text>
+          <Text>Size: {pen.nib.colour}</Text>
         </View>
-        <Image style={styles.image} uri={currentNib.image.url}/>
+        <Image style={styles.image} uri={pen.nib.image.url}/>
       </View>
     </View>
   );
@@ -102,8 +99,8 @@ export default function PenViewScreen() {
       </View>
       <View style={styles.textContainer}>
         {penView}
-        {currentNib ? nibView : null}
-        {currentInk ? inkView : null}
+        {pen.nib ? nibView : null}
+        {pen.ink ? inkView : null}
       </View>
     </ScrollView>
   )

@@ -39,7 +39,11 @@ export class InkModel extends Realm.Object {
       colour: 'string',
       manufacturer: 'string',
       volume: 'int',
-      pens: 'PenModel[]',
+      pens: {
+        type: 'linkingObjects',
+        objectType: 'PenModel',
+        property: 'ink'
+      },
       image: 'FileModel?',
     },
   };

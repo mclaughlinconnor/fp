@@ -39,7 +39,11 @@ export class NibModel extends Realm.Object {
       colour: 'string',
       manufacturer: 'string',
       size: 'string',
-      pens: 'PenModel[]',
+      pens: {
+        type: 'linkingObjects',
+        objectType: 'PenModel',
+        property: 'nib'
+      },
       image: 'FileModel?',
     },
   };

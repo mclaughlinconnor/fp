@@ -17,13 +17,11 @@ export class PenModel extends Realm.Object {
 
   public manufacturer!: string;
 
-  // Technically an array, so has to be plural
-  public nibs: NibModel[] = [];
+  public nib!: NibModel;
 
   public image: FileModel;
 
-  // Technically an array, so has to be plural
-  public inks: InkModel[] = [];
+  public ink: InkModel;
 
   static generate(pen: Partial<PenModel>): PenModel {
     return {
@@ -32,7 +30,8 @@ export class PenModel extends Realm.Object {
       icon: pen.icon,
       manufacturer: pen.manufacturer,
       name: pen.name,
-      nibs: pen.nibs?.map(nib => NibModel.generate(nib)),
+      nib: pen.nib,
+      ink: pen.ink,
       image: pen.image,
     } as PenModel;
   }
@@ -46,27 +45,9 @@ export class PenModel extends Realm.Object {
       colour: 'string',
       icon: 'string',
       manufacturer: 'string',
-      nibs: {
-        type: 'linkingObjects',
-        objectType: 'NibModel',
-        property: 'pens'
-      },
-      inks: {
-        type: 'linkingObjects',
-        objectType: 'InkModel',
-        property: 'pens'
-      },
+      nib: 'NibModel',
+      ink: 'InkModel',
       image: 'FileModel?'
     }
   };
-
-  public static currentNib(pen: PenModel) {
-    // A pen can only have one nib at a time
-    return pen?.nibs[0];
-  }
-
-  public static currentInk(pen: PenModel) {
-    // A pen can only have one ink at a time
-    return pen?.inks[0];
-  }
 }
