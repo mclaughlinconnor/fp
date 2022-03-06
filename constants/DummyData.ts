@@ -20,6 +20,7 @@ const lM = {
   _id: new Realm.BSON.UUID('014b5c46-44d8-402f-bbb9-30a80c763436'),
   size: 'medium' as unknown as NibSize,
   manufacturer: 'Lamy',
+  image: file
 } as NibModel;
 const tB = {
   colour: 'Silver',
@@ -33,6 +34,7 @@ const pM = {
   _id: new Realm.BSON.UUID('c87eeabd-82f3-4eac-80b3-be482d9bc6b8'),
   size: 'medium' as unknown as NibSize,
   manufacturer: 'Parker',
+  image: file
 } as NibModel;
 const cM = {
   colour: 'Silver',
@@ -46,6 +48,7 @@ const lS = {
   _id: new Realm.BSON.UUID('201ffea3-1228-46fd-a263-91788ec16eec'),
   size: '1.1mm stub' as unknown as NibSize,
   manufacturer: 'Lamy',
+  image: file
 } as NibModel;
 const jM = {
   colour: 'Silver',
@@ -59,6 +62,7 @@ const kM = {
   _id: new Realm.BSON.UUID('7dbdcc67-3e3a-4596-9869-f330f902047d'),
   size: 'medium' as unknown as NibSize,
   manufacturer: 'Kaweko',
+  image: file
 } as NibModel;
 const pF = {
   colour: 'Silver',
