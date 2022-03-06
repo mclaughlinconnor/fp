@@ -15,7 +15,6 @@ export function GoogleAuthSigninButton({brightness}: Props) {
   const login = async () => {
     setLoginInProgress(true);
     await googleAuthSvc.login();
-    setLoginInProgress(false);
   }
 
   return (
