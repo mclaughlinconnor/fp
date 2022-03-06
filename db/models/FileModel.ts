@@ -1,6 +1,18 @@
 import Realm from 'realm';
 import UUID = Realm.BSON.UUID;
 import {upload} from '../Firebase/StorageManager';
+import {FirebaseStorageTypes} from '@react-native-firebase/storage';
+import {ToastAndroid} from 'react-native';
+
+async function toastSuccessHandler(storageRef: FirebaseStorageTypes.Reference): Promise<string> {
+  ToastAndroid.show('File upload success', ToastAndroid.SHORT);
+
+  return await storageRef.getDownloadURL()
+}
+
+async function uploadStarted() {
+  ToastAndroid.show('File upload started...', ToastAndroid.SHORT);
+}
 
 export class FileModel extends Realm.Object {
 
@@ -23,7 +35,14 @@ export class FileModel extends Realm.Object {
   static async uploadGenerate(file: Partial<FileModel>, uri: string, fileType: 'images', directory: string): Promise<FileModel> {
     const id =  file._id || new Realm.BSON.UUID();
 
-    const downloadURL = await upload(fileType, directory,id.toHexString(), uri)
+    const downloadURL = await upload(
+      fileType,
+      directory,
+      id.toHexString(),
+      uri,
+      uploadStarted,
+      toastSuccessHandler,
+    )
 
     return {
       _id: id,

@@ -8,6 +8,7 @@ import auth from '@react-native-firebase/auth';
 type FailureHandler = (error: ReactNativeFirebase.NativeFirebaseError) => void;
 type SuccessHandler = (storageRef: FirebaseStorageTypes.Reference) => Promise<string>;
 type ProgressHandler = (snapshot: FirebaseStorageTypes.TaskSnapshot) => void;
+type StartHandler = () => void;
 
 async function defaultFailureHandler(error: ReactNativeFirebase.NativeFirebaseError): Promise<void> {
   const notifySvc = new NotificationService({})
@@ -70,9 +71,10 @@ export async function upload(
   directory: string,
   filename: string,
   file: string,
+  onUploadStart: StartHandler = uploadStarted,
   onSuccess: SuccessHandler = defaultSuccessHandler,
   onFailure: FailureHandler = defaultFailureHandler,
-  onProgress: ProgressHandler = defaultProgressHandler
+  onProgress: ProgressHandler = defaultProgressHandler,
 ): Promise<string> {
   let userId = auth().currentUser?.uid;
   if (!userId) {
@@ -83,7 +85,7 @@ export async function upload(
 
   const uploadTask = storageRef.putFile(file)
 
-  await uploadStarted();
+  await onUploadStart();
 
   return new Promise((resolve, reject) => {
     uploadTask.on(

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {PenModel} from '../../db/models/PenModel';
-import {Button, SafeAreaView, StyleSheet} from 'react-native';
+import {Button, SafeAreaView, StyleSheet, ToastAndroid} from 'react-native';
 import {NibModel} from '../../db/models/NibModel';
 import {View} from '../Styling/Themed';
 import {DropdownSelect} from '../Styling/DropdownSelect';
@@ -11,12 +11,13 @@ import CameraInput from '../Styling/Camera/CameraInput';
 import {CameraCapturedPicture} from 'expo-camera';
 import {FileModel} from '../../db/models/FileModel';
 import {InkModel} from '../../db/models/InkModel';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {PenStackRouteType} from './PenNavigator';
 
 export default function PenCreateScreen({}) {
   const colourSvc = new ColourService({});
   const route = useRoute<PenStackRouteType['PenCreate']['route']>();
+  const navigation = useNavigation<PenStackRouteType['PenCreate']['navigation']>();
   const {penId} = route.params;
 
   const styles = StyleSheet.create({
@@ -57,6 +58,8 @@ export default function PenCreateScreen({}) {
   const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
   const [penToBeUpdated, onChangePenToBeUpdated] = useState<PenModel>();
 
+  const [confirmDisabled, onChangeConfirmDisabled] = useState<boolean>(false);
+
   const updatePen = async (): Promise<void> => {
     if (!penToBeUpdated) {
       return
@@ -65,6 +68,8 @@ export default function PenCreateScreen({}) {
     if (!colour || !name || !selectedNib || !selectedInk || (!photo && !penToBeUpdated.image) || !manufacturer) {
       return;
     }
+
+    ToastAndroid.show('Updating pen...', ToastAndroid.SHORT);
 
     penToBeUpdated.colour = colour;
     const image = photo ? await FileModel.uploadGenerate({}, photo.uri, 'images', 'pens') : penToBeUpdated.image
@@ -83,6 +88,8 @@ export default function PenCreateScreen({}) {
     if (!colour || !name || !selectedNib || !selectedInk || !photo || !manufacturer) {
       return;
     }
+
+    ToastAndroid.show('Creating pen...', ToastAndroid.SHORT);
 
     const file = await FileModel.uploadGenerate({}, photo.uri, 'images', 'pens')
 
@@ -142,6 +149,19 @@ export default function PenCreateScreen({}) {
     return {value: ink, label: `${ink.manufacturer} ${ink.name} (${ink.volume}ml)`}
   }
 
+  const confirmOp = async () => {
+    onChangeConfirmDisabled(true)
+
+    if (penId) {
+      await updatePen();
+    } else {
+      await addPen();
+    }
+
+    ToastAndroid.show('Done', ToastAndroid.SHORT);
+    navigation.navigate('PenList');
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
@@ -167,7 +187,7 @@ export default function PenCreateScreen({}) {
       </View>
       <CameraInput onPhotoSave={onChangePhoto}/>
       <View style={styles.create}>
-        <Button title={penId ? 'Update' : 'Create'} onPress={penId ? updatePen : addPen} color={colourSvc.getColour(undefined, 'primary')}/>
+        <Button title={penId ? 'Update' : 'Create'} onPress={confirmOp} color={colourSvc.getColour(undefined, 'primary')} disabled={confirmDisabled}/>
       </View>
     </SafeAreaView>
   );
