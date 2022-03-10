@@ -3,6 +3,14 @@
     "version": ">= 0.47.0"
   },
   "build": {
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
     "development": {
       "distribution": "internal",
       "android": {
@@ -12,8 +20,11 @@
         "buildConfiguration": "Debug"
       }
     },
-    "preview": {
-      "distribution": "internal"
+    "apk": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
     },
     "production": {}
   },
