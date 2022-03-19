@@ -87,7 +87,7 @@ export default function NibCreateScreen({}) {
       return;
     }
 
-    ToastAndroid.show('Creating pen...', ToastAndroid.SHORT);
+    ToastAndroid.show('Creating nib...', ToastAndroid.SHORT);
 
     const file = await FileModel.uploadGenerate({}, photo.uri, 'images', 'nibs')
 
