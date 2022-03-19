@@ -105,12 +105,13 @@ export default function NibCreateScreen({}) {
 
     if (nibId) {
       await updateNib();
+      navigation.navigate('NibView', {nibId});
     } else {
       await addNib();
+      navigation.navigate('NibList');
     }
 
     ToastAndroid.show('Done', ToastAndroid.SHORT);
-    navigation.navigate('NibList');
   }
 
   return (

@@ -154,12 +154,13 @@ export default function PenCreateScreen({}) {
 
     if (penId) {
       await updatePen();
+      navigation.navigate('PenView', {penId});
     } else {
       await addPen();
+      navigation.navigate('PenList');
     }
 
     ToastAndroid.show('Done', ToastAndroid.SHORT);
-    navigation.navigate('PenList');
   }
 
   return (
