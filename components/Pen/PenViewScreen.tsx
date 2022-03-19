@@ -107,6 +107,7 @@ export default function PenViewScreen() {
           <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
           <Text>Colour: {pen.colour}</Text>
         </View>
+        <Image style={styles.image} uri={pen.image.url}/>
       </View>
     </View>
   );

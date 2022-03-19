@@ -62,7 +62,7 @@ export default function NibViewScreen() {
 
   useEffect(() => {
     const uuid = new Realm.BSON.UUID(nibId);
-    const nib = realmInstance.objectForPrimaryKey('Nib', uuid) as PenModel;
+    const nib = realmInstance.objectForPrimaryKey('Nib', uuid) as NibModel;
 
     return nib.addListener(() => {
       setNib(realmInstance.objectForPrimaryKey('Nib', uuid));
@@ -94,6 +94,7 @@ export default function NibViewScreen() {
             <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
             <Text>Colour: {pen.colour}</Text>
           </View>
+          <Image style={styles.image} uri={pen.image.url}/>
         </View>
       </View>
     );
