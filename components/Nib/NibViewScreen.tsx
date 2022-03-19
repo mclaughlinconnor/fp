@@ -79,7 +79,7 @@ export default function NibViewScreen() {
       <View style={styles.content}>
         <View style={styles.data}>
           <Text style={styles.name}>{nib.manufacturer} {nib.size}</Text>
-          <Text>Size: {nib.colour}</Text>
+          <Text>Colour: {nib.colour}</Text>
         </View>
         <Image style={styles.image} uri={nib.image.url}/>
       </View>
