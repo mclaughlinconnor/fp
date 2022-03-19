@@ -17,7 +17,8 @@ const linking: LinkingOptions<RootTabParamList> = {
       Ink: {
         screens: {
           InkCreate: 'create',
-          InkList: 'list'
+          InkList: 'list',
+          InkView: 'view',
         },
       },
       Nib: {

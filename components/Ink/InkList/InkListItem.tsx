@@ -1,10 +1,12 @@
-import {StyleSheet, ViewStyle} from 'react-native';
+import {Pressable, StyleSheet, ViewStyle} from 'react-native';
 import {Image} from "react-native-expo-image-cache";
 import {Text, View} from '../../Styling/Themed';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../../styles/ColourService';
 import useColorScheme from '../../../hooks/useColorScheme';
 import {InkModel} from '../../../db/models/InkModel';
+import {useNavigation} from '@react-navigation/native';
+import {InkStackRouteType} from '../InkNavigator';
 
 const colourSvc = new ColourService({});
 
@@ -21,6 +23,7 @@ const verticalLayout: ViewStyle = {
 
 export default function InkListItem({ink}: {ink: InkModel}) {
   const theme = useColorScheme();
+  const navigation = useNavigation<InkStackRouteType['InkList']['navigation']>();
 
   const styles = StyleSheet.create({
     icon: {
@@ -51,6 +54,10 @@ export default function InkListItem({ink}: {ink: InkModel}) {
     },
   });
 
+  const goToInk = () => {
+    return navigation.navigate('InkView', {inkId: ink._id.toHexString()})
+  }
+
   const image = <Image style={{width: 100, height: 100, marginLeft: 12}} uri={ink.image?.url} />;
   const noImage = <MaterialCommunityIcons
       size={styles.icon.width}
@@ -58,13 +65,17 @@ export default function InkListItem({ink}: {ink: InkModel}) {
       name={'water'}
     />;
 
-  return (<View style={styles.view} elevation={2}>
-    <Text>{Boolean(ink.image)}</Text>
-    {Boolean(ink.image) ? image : noImage}
-    <View style={styles.data}>
-      <Text style={styles.manufacturer}>{ink.manufacturer}</Text>
-      <Text style={styles.name}>{ink.name}</Text>
-      <Text style={styles.color}>{ink.colour}</Text>
-    </View>
-  </View>);
+  return (
+    <Pressable onPress={goToInk}>
+      <View style={styles.view} elevation={2}>
+        <Text>{Boolean(ink.image)}</Text>
+        {Boolean(ink.image) ? image : noImage}
+        <View style={styles.data}>
+          <Text style={styles.manufacturer}>{ink.manufacturer}</Text>
+          <Text style={styles.name}>{ink.name}</Text>
+          <Text style={styles.color}>{ink.colour}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
 }
