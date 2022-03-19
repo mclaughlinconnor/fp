@@ -5,10 +5,13 @@ import {storage} from './Firebase';
 import {ReactNativeFirebase} from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 
-type FailureHandler = (error: ReactNativeFirebase.NativeFirebaseError) => void;
-type SuccessHandler = (storageRef: FirebaseStorageTypes.Reference) => Promise<string>;
-type ProgressHandler = (snapshot: FirebaseStorageTypes.TaskSnapshot) => void;
-type StartHandler = () => void;
+type UploadFailureHandler = (error: ReactNativeFirebase.NativeFirebaseError) => void;
+type UploadSuccessHandler = (storageRef: FirebaseStorageTypes.Reference) => Promise<string>;
+type UploadProgressHandler = (snapshot: FirebaseStorageTypes.TaskSnapshot) => void;
+type UploadStartHandler = () => void;
+
+type DeleteStartHandler = () => void;
+type DeleteFinishHandler = () => void;
 
 async function defaultFailureHandler(error: ReactNativeFirebase.NativeFirebaseError): Promise<void> {
   const notifySvc = new NotificationService({})
@@ -66,15 +69,39 @@ async function uploadStarted() {
   await notifySvc.sendNotification(content)
 }
 
+async function deleteStarted() {
+  const notifySvc = new NotificationService({})
+  await notifySvc.notificationInitialise()
+
+  const content: NotificationContentInput = {
+    title: 'File delete started',
+    sound: true,
+  }
+
+  await notifySvc.sendNotification(content)
+}
+
+async function deleteFinished() {
+  const notifySvc = new NotificationService({})
+  await notifySvc.notificationInitialise()
+
+  const content: NotificationContentInput = {
+    title: 'File delete finished',
+    sound: true,
+  }
+
+  await notifySvc.sendNotification(content)
+}
+
 export async function upload(
   filetype: 'images',
   directory: string,
   filename: string,
   file: string,
-  onUploadStart: StartHandler = uploadStarted,
-  onSuccess: SuccessHandler = defaultSuccessHandler,
-  onFailure: FailureHandler = defaultFailureHandler,
-  onProgress: ProgressHandler = defaultProgressHandler,
+  onUploadStart: UploadStartHandler = uploadStarted,
+  onSuccess: UploadSuccessHandler = defaultSuccessHandler,
+  onFailure: UploadFailureHandler = defaultFailureHandler,
+  onProgress: UploadProgressHandler = defaultProgressHandler,
 ): Promise<string> {
   let userId = auth().currentUser?.uid;
   if (!userId) {
@@ -107,4 +134,23 @@ export async function upload(
        },
      );
   });
+}
+
+export async function remove(
+  filetype: 'images',
+  directory: string,
+  filename: string,
+  onDeleteStart: DeleteStartHandler = deleteStarted,
+  onDeleteFinish: DeleteFinishHandler = deleteFinished,
+): Promise<void> {
+  let userId = auth().currentUser?.uid;
+  if (!userId) {
+    userId = 'anon'
+  }
+
+  const storageRef = storage.ref(`${userId}/${filetype}/${directory}/${filename}`);
+
+  await onDeleteStart();
+  await storageRef.delete()
+  await onDeleteFinish();
 }

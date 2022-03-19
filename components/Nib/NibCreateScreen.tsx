@@ -68,7 +68,11 @@ export default function NibCreateScreen({}) {
 
     ToastAndroid.show('Updating nib...', ToastAndroid.SHORT);
 
-    const image = photo ? await FileModel.uploadGenerate({}, photo.uri, 'images', 'nibs') : nibToBeUpdated.image
+    let image = nibToBeUpdated.image;
+    if (photo) {
+      image = await FileModel.uploadGenerate({}, photo.uri, 'images', 'nibs')
+      await FileModel.delete(nibToBeUpdated.image, 'images', 'nibs');
+    }
 
     realmInstance.write(() => {
       nibToBeUpdated.colour = colour;

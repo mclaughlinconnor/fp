@@ -71,8 +71,11 @@ export default function PenCreateScreen({}) {
 
     ToastAndroid.show('Updating pen...', ToastAndroid.SHORT);
 
-    penToBeUpdated.colour = colour;
-    const image = photo ? await FileModel.uploadGenerate({}, photo.uri, 'images', 'pens') : penToBeUpdated.image
+    let image = penToBeUpdated.image;
+    if (photo) {
+      image = await FileModel.uploadGenerate({}, photo.uri, 'images', 'pens')
+      await FileModel.delete(penToBeUpdated.image, 'images', 'pens');
+    }
 
     realmInstance.write(() => {
       penToBeUpdated.colour = colour;

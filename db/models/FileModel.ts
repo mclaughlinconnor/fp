@@ -1,6 +1,6 @@
 import Realm from 'realm';
 import UUID = Realm.BSON.UUID;
-import {upload} from '../Firebase/StorageManager';
+import {remove, upload} from '../Firebase/StorageManager';
 import {FirebaseStorageTypes} from '@react-native-firebase/storage';
 import {ToastAndroid} from 'react-native';
 
@@ -49,6 +49,16 @@ export class FileModel extends Realm.Object {
       createdAt: new Date(),
       url: downloadURL,
     } as FileModel;
+  }
+
+  static async delete(file: Partial<FileModel>, fileType: 'images', directory: string): Promise<void> {
+    const id =  file._id || new Realm.BSON.UUID();
+
+    await remove(
+      fileType,
+      directory,
+      id.toHexString(),
+    )
   }
 
   public static schema: Realm.ObjectSchema = {
