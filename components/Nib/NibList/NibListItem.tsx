@@ -1,10 +1,12 @@
-import {StyleSheet, ViewStyle} from 'react-native';
+import {Pressable, StyleSheet, ViewStyle} from 'react-native';
 import {Image} from "react-native-expo-image-cache";
 import {Text, View} from '../../Styling/Themed';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../../styles/ColourService';
 import {NibModel} from '../../../db/models/NibModel';
 import useColorScheme from '../../../hooks/useColorScheme';
+import {NibStackRouteType} from '../NibNavigator';
+import {useNavigation} from '@react-navigation/native';
 
 const colourSvc = new ColourService({});
 
@@ -21,6 +23,7 @@ const verticalLayout: ViewStyle = {
 
 export default function NibListItem({nib}: {nib: NibModel}) {
   const theme = useColorScheme();
+  const navigation = useNavigation<NibStackRouteType['NibList']['navigation']>();
 
   const styles = StyleSheet.create({
     icon: {
@@ -51,6 +54,10 @@ export default function NibListItem({nib}: {nib: NibModel}) {
     },
   });
 
+  const goToNib = () => {
+    return navigation.navigate('NibView', {nibId: nib._id.toHexString()})
+  }
+
   const image = <Image style={{width: 100, height: 100, marginLeft: 12}} uri={nib.image?.url} />;
   const noImage = <MaterialCommunityIcons
       size={styles.icon.width}
@@ -58,13 +65,17 @@ export default function NibListItem({nib}: {nib: NibModel}) {
       name={'fountain-pen-tip'}
     />;
 
-  return (<View style={styles.view} elevation={2}>
-    <Text>{Boolean(nib.image)}</Text>
-    {Boolean(nib.image) ? image : noImage}
-    <View style={styles.data}>
-      <Text style={styles.size}>{nib.size}</Text>
-      <Text style={styles.manufacturer}>{nib.manufacturer}</Text>
-      <Text style={styles.color}>{nib.colour}</Text>
-    </View>
-  </View>);
+  return (
+    <Pressable onPress={goToNib}>
+      <View style={styles.view} elevation={2}>
+        <Text>{Boolean(nib.image)}</Text>
+        {Boolean(nib.image) ? image : noImage}
+        <View style={styles.data}>
+          <Text style={styles.size}>{nib.size}</Text>
+          <Text style={styles.manufacturer}>{nib.manufacturer}</Text>
+          <Text style={styles.color}>{nib.colour}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
 }

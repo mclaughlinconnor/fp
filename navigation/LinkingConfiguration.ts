@@ -24,6 +24,7 @@ const linking: LinkingOptions<RootTabParamList> = {
         screens: {
           NibCreate: 'create',
           NibList: 'list',
+          NibView: 'view',
         },
       },
     },
