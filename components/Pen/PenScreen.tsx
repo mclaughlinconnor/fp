@@ -7,6 +7,7 @@ import {NibModel} from '../../db/models/NibModel';
 import {ColourService} from '../../styles/ColourService';
 import {realmInstance} from '../../db/Realm';
 import {FileModel} from '../../db/models/FileModel';
+import {InkModel} from '../../db/models/InkModel';
 
 export default function PenScreen() {
   const colourSvc = new ColourService({});
@@ -44,6 +45,27 @@ export default function PenScreen() {
             pen.image = image;
           }
 
+          let ink: InkModel;
+          if (pen.ink) {
+            let inkImage: FileModel;
+            if (pen.ink.image) {
+              inkImage = realm?.objectForPrimaryKey('File', pen.ink.image._id) as FileModel;
+
+              if (!inkImage) {
+                inkImage = realm?.create('File', FileModel.generate(pen.ink.image)) as FileModel
+              }
+
+              pen.ink.image = inkImage;
+            }
+
+            ink = realm?.objectForPrimaryKey('Ink', pen.ink?._id) as InkModel;
+            if (!ink) {
+              ink = realm.create('Ink', InkModel.generate(pen.ink));
+            }
+
+            pen.ink = ink;
+          }
+
           let nib: NibModel;
           if (pen.nib) {
             let nibImage: FileModel;
@@ -61,8 +83,8 @@ export default function PenScreen() {
             if (!nib) {
               nib = realm.create('Nib', NibModel.generate(pen.nib));
             }
-            pen.nib = nib;
 
+            pen.nib = nib;
           }
 
           realm?.create('Pen', PenModel.generate(pen));

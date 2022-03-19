@@ -1,12 +1,78 @@
 import {NibModel, NibSize} from '../db/models/NibModel';
 import {PenModel} from '../db/models/PenModel';
 import {FileModel} from '../db/models/FileModel';
+import {InkModel} from '../db/models/InkModel';
 
 const file = {
   _id: new Realm.BSON.UUID('15c95d13-27cb-420f-88a7-464f23106058'),
   createdAt: new Date(),
   url: 'https://firebasestorage.googleapis.com/v0/b/cm-fp-1b689.appspot.com/o/BkQeVUybGUWzCMXjNYhwjNMadQE2%2Fimages%2Fnibs%2F2a7160dc-1269-4c9c-8a0b-c0c19898c066?alt=media&token=f964348b-5c49-4c26-bce7-3db0181db199'
 } as FileModel;
+
+const dOchre = {
+  _id: new Realm.BSON.UUID('6d45c8b9-a7be-4285-a8f2-f4f657a1600e'),
+  name: 'Ochre',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+  colour: 'Brown',
+} as InkModel;
+const dVCBlue = {
+  _id: new Realm.BSON.UUID('c198126a-e6e4-4158-8685-ba3153158130'),
+  name: 'Steel Blue',
+  colour: 'Blue',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+} as InkModel;
+const dBlood = {
+  _id: new Realm.BSON.UUID('2ec30e1c-9a5a-4a46-a688-37d9bc065dae'),
+  name: 'Writer\'s Blood',
+  colour: 'Red',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+} as InkModel;
+const dPansy = {
+  _id: new Realm.BSON.UUID('c35d8f9f-5325-4460-893f-535fe4cee79e'),
+  name: 'dPansy',
+  colour: 'Purple',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+} as InkModel;
+const dEarl = {
+  _id: new Realm.BSON.UUID('2a6e30d6-75c3-4dbe-9ec5-1a817531c830'),
+  name: 'Earl Grey',
+  colour: 'Grey',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+} as InkModel;
+const dMarine = {
+  _id: new Realm.BSON.UUID('8a02b89a-c1f7-4b5c-a304-bfd62287445b'),
+  name: 'Marine',
+  colour: 'Blue',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+} as InkModel;
+const dCerise = {
+  _id: new Realm.BSON.UUID('92ff1310-365d-439b-bac2-74951397d3ee'),
+  name: 'Cerise',
+  colour: 'Pink',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+} as InkModel;
+const dSunset = {
+  _id: new Realm.BSON.UUID('cbaede20-97b7-4599-aa8e-cd46945366f3'),
+  name: 'Sunset',
+  colour: 'Orange',
+  image: file,
+  volume: 30,
+  manufacturer: 'Diamine',
+} as InkModel;
 
 const jEF = {
   colour: 'Silver',
@@ -80,7 +146,8 @@ export const Pens: Partial<PenModel>[] = [
     name: 'Safari',
     manufacturer: 'LAMY',
     nib: lM,
-    image: file
+    image: file,
+    ink: dSunset,
   }, {
     colour: 'black',
     icon: 'fountain-pen',
@@ -88,7 +155,8 @@ export const Pens: Partial<PenModel>[] = [
     name: 'Safari',
     manufacturer: 'LAMY',
     nib: lS,
-    image: file
+    image: file,
+    ink: dCerise,
   }, {
     colour: 'black',
     icon: 'fountain-pen',
@@ -96,7 +164,8 @@ export const Pens: Partial<PenModel>[] = [
     name: '993 (Shark)',
     manufacturer: 'Jinhao',
     nib: jEF,
-    image: file
+    image: file,
+    ink: dPansy,
   }, {
     colour: 'red',
     icon: 'fountain-pen',
@@ -104,7 +173,8 @@ export const Pens: Partial<PenModel>[] = [
     name: '993 (Shark)',
     manufacturer: 'Jinhao',
     nib: jEF,
-    image: file
+    image: file,
+    ink: dBlood,
   }, {
     colour: 'blue',
     icon: 'fountain-pen',
@@ -112,7 +182,8 @@ export const Pens: Partial<PenModel>[] = [
     name: '993 (Shark)',
     manufacturer: 'Jinhao',
     nib: jEF,
-    image: file
+    image: file,
+    ink: dOchre,
   }, {
     colour: 'white',
     icon: 'fountain-pen',
@@ -120,7 +191,8 @@ export const Pens: Partial<PenModel>[] = [
     name: '993 (Shark)',
     manufacturer: 'Jinhao',
     nib: jEF,
-    image: file
+    image: file,
+    ink: dMarine,
   }, {
     colour: 'black',
     icon: 'fountain-pen',
@@ -128,7 +200,8 @@ export const Pens: Partial<PenModel>[] = [
     name: 'x750',
     manufacturer: 'Jinhao',
     nib: jM,
-    image: file
+    image: file,
+    ink: dVCBlue,
   }, {
     colour: 'gold/silver',
     icon: 'fountain-pen',
@@ -136,7 +209,8 @@ export const Pens: Partial<PenModel>[] = [
     name: 'Sonnet',
     manufacturer: 'Parker',
     nib: pM,
-    image: file
+    image: file,
+    ink: dEarl,
   }, {
     colour: 'black',
     icon: 'fountain-pen',
@@ -144,7 +218,8 @@ export const Pens: Partial<PenModel>[] = [
     name: 'Calais',
     manufacturer: 'Cross',
     nib: cM,
-    image: file
+    image: file,
+    ink: dPansy,
   }, {
     colour: 'white/blue',
     icon: 'fountain-pen',
@@ -152,7 +227,8 @@ export const Pens: Partial<PenModel>[] = [
     name: 'Perkeo',
     manufacturer: 'Kaweko',
     nib: kM,
-    image: file
+    image: file,
+    ink: dCerise,
   }, {
     colour: 'transparent',
     icon: 'fountain-pen',
@@ -160,7 +236,8 @@ export const Pens: Partial<PenModel>[] = [
     name: 'Preppy',
     manufacturer: 'Platinum',
     nib: pF,
-    image: file
+    image: file,
+    ink: dBlood,
   }, {
     colour: 'transparent',
     icon: 'fountain-pen',
@@ -168,6 +245,7 @@ export const Pens: Partial<PenModel>[] = [
     name: 'Go',
     manufacturer: 'TWISBI',
     nib: tB,
-    image: file
+    image: file,
+    ink: dMarine,
   },
 ]
