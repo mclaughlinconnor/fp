@@ -1,6 +1,7 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Component} from 'react';
+import {webClientId} from '../../../../constants/Secrets';
 
 export class GoogleAuth extends Component<{}, {}> {
   public user: FirebaseAuthTypes.User | null = null;
@@ -12,7 +13,7 @@ export class GoogleAuth extends Component<{}, {}> {
 
   public configure() {
     GoogleSignin.configure({
-      webClientId: 'x.apps.googleusercontent.com'
+      webClientId: webClientId
     });
   }
 

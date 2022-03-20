@@ -3,9 +3,10 @@ import {PenModel} from './models/PenModel';
 import {NibModel} from './models/NibModel';
 import {FileModel} from './models/FileModel';
 import {InkModel} from './models/InkModel';
+import {realmId} from '../constants/Secrets';
 
 export const realmApp = new Realm.App({
-  id: 'fp-x',
+  id: realmId,
 });
 
 export let realmInstance: Realm;
