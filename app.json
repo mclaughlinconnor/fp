@@ -12,6 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "runtimeVersion": "1.0",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -20,10 +21,6 @@
     ],
     "extra": {
       "flipperHack": "React Native packager is running"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.mclaughlin.fp"
     },
     "android": {
       "adaptiveIcon": {

@@ -3,15 +3,9 @@
     "version": ">= 0.47.0"
   },
   "build": {
-    "preview2": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "developmentClient": true
-    },
     "development": {
+      "releaseChannel": "development",
+      "developmentClient": true,
       "distribution": "internal",
       "android": {
         "gradleCommand": ":app:assembleDebug"
@@ -20,13 +14,22 @@
         "buildConfiguration": "Debug"
       }
     },
-    "apk": {
+    "productionApk": {
+      "releaseChannel": "production",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "internalApk": {
+      "releaseChannel": "development",
       "distribution": "internal",
       "android": {
         "buildType": "apk"
       }
     },
-    "production": {}
+    "productionBundle": {
+      "releaseChannel": "production"
+    }
   },
   "submit": {
     "production": {}
