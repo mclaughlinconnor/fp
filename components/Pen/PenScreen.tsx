@@ -94,10 +94,16 @@ export default function PenScreen() {
     [realmInstance]
   );
 
-  return (
-    <SafeAreaView style={styles.container}>
+  const debugButtons = (
+    <>
       <Button title={'Reset Database'} onPress={resetDatabase} color={colourSvc.getColour(undefined, 'primary')}/>
       <Button title={'Populate Dummy Data'} onPress={populateDummyData} color={colourSvc.getColour(undefined, 'primary')}/>
+    </>
+  )
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {__DEV__ ? debugButtons : null}
       <PenList/>
     </SafeAreaView>
   );
