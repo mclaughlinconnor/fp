@@ -1,9 +1,8 @@
 import NibList from './NibList/NibList';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {Props} from './NibNavigator';
 import {ColourService} from '../../styles/ColourService';
 
-export default function NibScreen({route, navigation}: Props) {
+export default function NibScreen({}) {
   const colourSvc = new ColourService({});
 
   const styles = StyleSheet.create({
@@ -15,7 +14,7 @@ export default function NibScreen({route, navigation}: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <NibList navigation={navigation} route={route}/>
+      <NibList />
     </SafeAreaView>
   );
 }
