@@ -48,7 +48,7 @@ export function CameraView({cameraRef, capturePhoto}: Props) {
   })
 
   return (
-    <Camera style={cameraViewStyles.container} ref={cameraRef} useCamera2Api={true} ratio={'1:1'}>
+    <Camera style={cameraViewStyles.container} ref={cameraRef} useCamera2Api={false} ratio={'1:1'}>
       <View style={cameraViewStyles.captureContainerContainer}>
         <View style={cameraViewStyles.captureContainer}>
           <TouchableOpacity onPress={capturePhoto} style={cameraViewStyles.capture}/>
