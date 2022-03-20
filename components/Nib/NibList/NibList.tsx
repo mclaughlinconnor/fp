@@ -55,6 +55,6 @@ export default function NibList() {
       renderItem={renderItem}
       keyExtractor={item => item._id.toString()}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('NibCreate')}/>
+    <FloatingActionButton onPress={() => navigation.navigate('NibCreate', {})}/>
   </View>);
 }

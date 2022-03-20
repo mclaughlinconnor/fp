@@ -55,6 +55,6 @@ export default function InkList() {
       renderItem={renderItem}
       keyExtractor={item => item._id.toString()}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('InkCreate')}/>
+    <FloatingActionButton onPress={() => navigation.navigate('InkCreate', {})}/>
   </View>);
 }
