@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useRef, useState} from 'react';
-import {FlatList, StyleSheet, Text, Modal, View, Pressable, ViewStyle, TextStyle, Animated, Easing} from 'react-native';
+import {FlatList, StyleSheet, Text, Modal, View, Pressable, ViewStyle, TextStyle, Animated, Easing, Dimensions} from 'react-native';
 import {ColourService} from '../../styles/ColourService';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
@@ -54,12 +54,15 @@ export function DropdownSelect({label, data, onSelect, defaultSelected, allowNon
     },
     dropdown: {
       position: 'absolute',
+      // Stops overflowing from screen because container is offset by dropdownTop
+      maxHeight: Dimensions.get('window').height - dropdownTop,
       backgroundColor: colourSvc.getColour(undefined, 'surface', 'dark'),
       ...colourSvc.getViewElevationStyle(1) as ViewStyle,
     },
     overlay: {
       width: '100%',
       height: '100%',
+      flex: 1,
     },
     item: {
       paddingHorizontal: 16,
@@ -119,7 +122,7 @@ export function DropdownSelect({label, data, onSelect, defaultSelected, allowNon
 
   const renderDropdown = (): ReactElement<any, any> => {
     return (
-      <Modal visible={visible} transparent animationType={"fade"}>
+      <Modal visible={visible} transparent animationType={"fade"} style={{flex: 1}}>
         <Pressable style={styles.overlay} onPress={closeDropdown}>
           <View style={[styles.dropdown, { top: dropdownTop, left: dropdownHorizontal, right: dropdownHorizontal }]}>
             <FlatList
