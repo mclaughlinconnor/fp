@@ -21,7 +21,7 @@ export class PenModel extends Realm.Object {
 
   public image: FileModel;
 
-  public ink: InkModel;
+  public ink?: InkModel;
 
   static generate(pen: Partial<PenModel>): PenModel {
     return {

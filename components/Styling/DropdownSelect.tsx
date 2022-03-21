@@ -8,9 +8,10 @@ interface Props {
   data: {label: string; value: any}[];
   onSelect?: ((value: any) => void) | undefined;
   defaultSelected?: any;
+  allowNone?: boolean;
 }
 
-export function DropdownSelect({label, data, onSelect, defaultSelected}: Props) {
+export function DropdownSelect({label, data, onSelect, defaultSelected, allowNone}: Props) {
   const caretRotateAnim = useRef(new Animated.Value(1)).current;
 
   const StartButton = useRef<View>(null);
@@ -122,7 +123,7 @@ export function DropdownSelect({label, data, onSelect, defaultSelected}: Props) 
         <Pressable style={styles.overlay} onPress={closeDropdown}>
           <View style={[styles.dropdown, { top: dropdownTop, left: dropdownHorizontal, right: dropdownHorizontal }]}>
             <FlatList
-              data={data}
+              data={allowNone ? [{label: 'None', value: undefined}, ...data] : data}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />

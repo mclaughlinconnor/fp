@@ -52,7 +52,7 @@ export default function PenCreateScreen({}) {
   const [manufacturer, onChangeManufacturer] = useState('');
   const [colour, onChangeColour] = useState('');
   const [selectedNib, onChangeSelectedNib] = useState<NibModel | null>(null);
-  const [selectedInk, onChangeSelectedInk] = useState<InkModel | null>(null);
+  const [selectedInk, onChangeSelectedInk] = useState<InkModel | undefined>(undefined);
   const [dbNibs, onChangeDbNibs] = useState<Realm.Results<NibModel> | []>([]);
   const [dbInks, onChangeDbInks] = useState<Realm.Results<InkModel> | []>([]);
   const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
@@ -65,7 +65,7 @@ export default function PenCreateScreen({}) {
       return
     }
 
-    if (!colour || !name || !selectedNib || !selectedInk || (!photo && !penToBeUpdated.image) || !manufacturer) {
+    if (!colour || !name || !selectedNib || (!photo && !penToBeUpdated.image) || !manufacturer) {
       return;
     }
 
@@ -78,9 +78,9 @@ export default function PenCreateScreen({}) {
     }
 
     realmInstance.write(() => {
+      penToBeUpdated.ink = selectedInk || undefined;
       penToBeUpdated.colour = colour;
       penToBeUpdated.image = image;
-      penToBeUpdated.ink = selectedInk;
       penToBeUpdated.manufacturer = manufacturer;
       penToBeUpdated.name = name;
       penToBeUpdated.nib = selectedNib;
@@ -88,7 +88,7 @@ export default function PenCreateScreen({}) {
   }
 
   const addPen = async (): Promise<void> => {
-    if (!colour || !name || !selectedNib || !selectedInk || !photo || !manufacturer) {
+    if (!colour || !name || !selectedNib || !photo || !manufacturer) {
       return;
     }
 
@@ -184,14 +184,33 @@ export default function PenCreateScreen({}) {
         placeholder={'Pen colour'}
       />
       <View style={{marginHorizontal: 16, marginTop: 12}}>
-        <DropdownSelect label={'Select nib...'} data={dbNibs.map(generateNibItems)} onSelect={onChangeSelectedNib} defaultSelected={selectedNib ? generateNibItems(selectedNib) : undefined}/>
+        <DropdownSelect
+          label={'Select nib...'}
+          data={dbNibs.map(generateNibItems)}
+          onSelect={onChangeSelectedNib}
+          defaultSelected={
+            selectedNib ? generateNibItems(selectedNib) : undefined
+          }/>
       </View>
       <View style={{marginHorizontal: 16, marginTop: 12}}>
-        <DropdownSelect label={'Select ink...'} data={dbInks.map(generateInkItems)} onSelect={onChangeSelectedInk} defaultSelected={selectedInk ? generateInkItems(selectedInk) : undefined}/>
+        <DropdownSelect
+          label={'Select ink...'}
+          data={dbInks.map(generateInkItems)}
+          onSelect={onChangeSelectedInk}
+          defaultSelected={
+            selectedInk ? generateInkItems(selectedInk) : undefined
+          }
+          allowNone={true}
+        />
       </View>
       <CameraInput onPhotoSave={onChangePhoto}/>
       <View style={styles.create}>
-        <Button title={penId ? 'Update' : 'Create'} onPress={confirmOp} color={colourSvc.getColour(undefined, 'primary')} disabled={confirmDisabled}/>
+        <Button
+          title={penId ? 'Update' : 'Create'}
+          onPress={confirmOp}
+          color={colourSvc.getColour(undefined, 'primary')}
+          disabled={confirmDisabled}
+        />
       </View>
     </SafeAreaView>
   );
