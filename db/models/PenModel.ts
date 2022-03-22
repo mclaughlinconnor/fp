@@ -19,7 +19,7 @@ export class PenModel extends Realm.Object {
 
   public nib!: NibModel;
 
-  public image: FileModel;
+  public image!: FileModel;
 
   public ink?: InkModel;
 
