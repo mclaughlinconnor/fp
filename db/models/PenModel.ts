@@ -48,6 +48,11 @@ export class PenModel extends Realm.Object {
       nib: 'Nib',
       ink: 'Ink',
       image: 'File?',
+      updates: {
+        type: 'linkingObjects',
+        objectType: 'PenUpdate',
+        property: 'pen'
+      },
     }
   };
 }

@@ -4,6 +4,7 @@ import {NibModel} from './models/NibModel';
 import {FileModel} from './models/FileModel';
 import {InkModel} from './models/InkModel';
 import {realmId} from '../constants/Secrets';
+import {PenUpdateModel} from './models/PenUpdateModel';
 
 export const realmApp = new Realm.App({
   id: realmId,
@@ -22,11 +23,13 @@ export async function openRealm() {
       NibModel.schema,
       FileModel.schema,
       InkModel.schema,
+      PenUpdateModel.schema,
     ],
     sync: {
       user: realmApp.currentUser,
       partitionValue: realmApp.currentUser.id,
     },
+    schemaVersion: 2,
   });
 
 /// FlipperDatabasesPlugin - START

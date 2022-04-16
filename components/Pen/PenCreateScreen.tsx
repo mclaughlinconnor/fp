@@ -13,6 +13,7 @@ import {FileModel} from '../../db/models/FileModel';
 import {InkModel} from '../../db/models/InkModel';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {PenStackRouteType} from './PenNavigator';
+import {PenUpdateModel, UpdateTypes} from '../../db/models/PenUpdateModel';
 
 export default function PenCreateScreen({}) {
   const colourSvc = new ColourService({});
@@ -78,13 +79,35 @@ export default function PenCreateScreen({}) {
     }
 
     realmInstance.write(() => {
-      penToBeUpdated.ink = selectedInk || undefined;
+      const update = PenUpdateModel.generate({
+        updateType: UpdateTypes.UPDATE,
+        pen: penToBeUpdated,
+        date: new Date(),
+        colour: isPropertyChanged(penToBeUpdated.colour, colour),
+        image: isPropertyChanged(penToBeUpdated.image, image),
+        manufacturer: isPropertyChanged(penToBeUpdated.manufacturer, manufacturer),
+        name: isPropertyChanged(penToBeUpdated.name, name),
+        ink: isIdChanged(penToBeUpdated.ink, selectedInk),
+        nib: isIdChanged(penToBeUpdated.nib, selectedNib),
+      })
+
       penToBeUpdated.colour = colour;
       penToBeUpdated.image = image;
+      penToBeUpdated.ink = selectedInk || undefined;
       penToBeUpdated.manufacturer = manufacturer;
       penToBeUpdated.name = name;
       penToBeUpdated.nib = selectedNib;
+
+      realmInstance.create('PenUpdate', update);
     })
+  }
+
+  const isIdChanged = (oldProperty: any, newProperty: any) => {
+    return oldProperty?._id?.toHexString() === newProperty?._id?.toHexString() ? undefined : newProperty;
+  }
+
+  const isPropertyChanged = (oldPenProperty: any, newPenProperty: any) => {
+    return oldPenProperty === newPenProperty ? undefined : newPenProperty;
   }
 
   const addPen = async (): Promise<void> => {
@@ -107,7 +130,17 @@ export default function PenCreateScreen({}) {
     });
 
     realmInstance?.write(() => {
-      realmInstance?.create('Pen', pen);
+      const createdPen = realmInstance?.create('Pen', pen) as PenModel;
+
+      const update = PenUpdateModel.generate({
+        updateType: UpdateTypes.ADD,
+        ink: selectedInk || undefined,
+        nib: selectedNib,
+        pen: createdPen,
+        date: new Date(),
+      })
+
+      realmInstance.create('PenUpdate', update);
     });
   }
 
