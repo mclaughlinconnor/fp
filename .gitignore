@@ -71,4 +71,3 @@ web-build/
 dist/
 
 google-services.json
-constants/Secrets.ts

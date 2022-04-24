@@ -3,7 +3,7 @@ import {PenModel} from './models/PenModel';
 import {NibModel} from './models/NibModel';
 import {FileModel} from './models/FileModel';
 import {InkModel} from './models/InkModel';
-import {realmId} from '../constants/Secrets';
+import {realmId} from '../constants/API';
 import {PenUpdateModel} from './models/PenUpdateModel';
 
 export const realmApp = new Realm.App({

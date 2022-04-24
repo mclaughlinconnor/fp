@@ -1,7 +1,7 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Component} from 'react';
-import {webClientId} from '../../../../constants/Secrets';
+import {webClientId} from '../../../../constants/API';
 
 export class GoogleAuth extends Component<{}, {}> {
   public user: FirebaseAuthTypes.User | null = null;
