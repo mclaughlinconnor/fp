@@ -1,5 +1,17 @@
-import React, {ReactElement, useEffect, useRef, useState} from 'react';
-import {FlatList, StyleSheet, Text, Modal, View, Pressable, ViewStyle, TextStyle, Animated, Easing, Dimensions} from 'react-native';
+import React, {ReactElement, useCallback, useEffect, useRef, useState} from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  Modal,
+  View,
+  Pressable,
+  ViewStyle,
+  TextStyle,
+  Animated,
+  Easing,
+  Dimensions,
+} from 'react-native';
 import {ColourService} from '../../styles/ColourService';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
@@ -14,7 +26,6 @@ interface Props {
 export function DropdownSelect({label, data, onSelect, defaultSelected, allowNone}: Props) {
   const caretRotateAnim = useRef(new Animated.Value(1)).current;
 
-  const StartButton = useRef<View>(null);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState<any>();
   const [dropdownTop, setDropdownTop] = useState(0);
@@ -89,12 +100,12 @@ export function DropdownSelect({label, data, onSelect, defaultSelected, allowNon
     ).start();
   }
 
-  useEffect(() => {
-    StartButton.current?.measureInWindow((x, y, width, height) => {
+  const initOffsets = useCallback((node: View) => {
+    node?.measureInWindow((x, y, width, height) => {
       setDropdownHorizontal(x);
       setDropdownTop(y+height);
     });
-  }, [StartButton])
+  }, []);
 
   const openDropdown = (): void => {
     setVisible(true);
@@ -137,7 +148,7 @@ export function DropdownSelect({label, data, onSelect, defaultSelected, allowNon
   };
 
   return (
-    <Pressable ref={StartButton} style={styles.button} onPress={toggleDropdown}>
+    <Pressable ref={initOffsets} style={styles.button} onPress={toggleDropdown}>
       {renderDropdown()}
       <Text style={styles.buttonText}>
         {selected?.label || label}
