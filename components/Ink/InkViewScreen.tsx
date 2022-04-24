@@ -1,6 +1,6 @@
 import {Text, View} from '../Styling/Themed';
 import {Image} from 'react-native-expo-image-cache';
-import {ScrollView, StyleSheet} from 'react-native';
+import {Pressable, ScrollView, StyleSheet} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {realmInstance} from '../../db/Realm';
@@ -10,6 +10,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../styles/ColourService';
 import {InkStackRouteType} from './InkNavigator';
 import {InkModel} from '../../db/models/InkModel';
+import {BottomTabProps} from '../../navigation/types';
 
 export default function InkViewScreen() {
   const colourSvc = new ColourService({});
@@ -57,6 +58,7 @@ export default function InkViewScreen() {
   const [ink, setInk] = useState<InkModel>()
 
   const navigation = useNavigation<InkStackRouteType['InkView']['navigation']>();
+  const rootNavigation = useNavigation<BottomTabProps['navigation']>();
   const route = useRoute<InkStackRouteType['InkView']['route']>();
   const {inkId} = route.params;
 
@@ -71,6 +73,10 @@ export default function InkViewScreen() {
 
   if (!ink) {
     return null;
+  }
+
+  const goToPen = (pen: PenModel) => {
+    return rootNavigation.navigate('Pen', {screen: 'PenView', params: {penId: pen._id.toHexString()}})
   }
 
   const inkView = (
@@ -89,7 +95,7 @@ export default function InkViewScreen() {
 
   const PenItemView = ({pen}: {pen: PenModel}) => {
     return (
-      <View>
+      <Pressable onPress={() => goToPen(pen)}>
         <View style={styles.content}>
           <View style={styles.data}>
             <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
@@ -97,7 +103,7 @@ export default function InkViewScreen() {
           </View>
           <Image style={styles.image} uri={pen.image.url}/>
         </View>
-      </View>
+      </Pressable>
     );
   }
 

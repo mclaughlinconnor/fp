@@ -1,6 +1,6 @@
 import {Text, View} from '../Styling/Themed';
 import {Image} from 'react-native-expo-image-cache';
-import {ScrollView, StyleSheet} from 'react-native';
+import {Pressable, ScrollView, StyleSheet} from 'react-native';
 import {PenStackRouteType} from './PenNavigator';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
@@ -9,6 +9,9 @@ import {PenModel} from '../../db/models/PenModel';
 import {LinedHeading} from '../Styling/LinedHeading';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../styles/ColourService';
+import {BottomTabProps} from '../../navigation/types';
+import {InkModel} from '../../db/models/InkModel';
+import {NibModel} from '../../db/models/NibModel';
 
 export default function PenViewScreen() {
   const colourSvc = new ColourService({});
@@ -56,6 +59,7 @@ export default function PenViewScreen() {
   const [pen, setPen] = useState<PenModel>()
 
   const navigation = useNavigation<PenStackRouteType['PenView']['navigation']>();
+  const rootNavigation = useNavigation<BottomTabProps['navigation']>();
   const route = useRoute<PenStackRouteType['PenView']['route']>();
   const {penId} = route.params;
 
@@ -72,8 +76,16 @@ export default function PenViewScreen() {
     return null;
   }
 
+  const goToNib = (nib: NibModel) => {
+    return rootNavigation.navigate('Nib', {screen: 'NibView', params: {nibId: nib._id.toHexString()}})
+  }
+
+  const goToInk = (ink: InkModel) => {
+    return rootNavigation.navigate('Ink', {screen: 'InkView', params: {inkId: ink._id.toHexString()}})
+  }
+
   const inkView = !pen.ink ? null : (
-    <View>
+    <Pressable onPress={() => goToInk(pen.ink!)}>
       <LinedHeading text={'Ink'}/>
       <View style={styles.content}>
         <View style={styles.data}>
@@ -83,11 +95,11 @@ export default function PenViewScreen() {
         </View>
         <Image style={styles.image} uri={pen.ink.image.url}/>
       </View>
-    </View>
+    </Pressable>
   );
 
   const nibView = !pen.nib ? null : (
-    <View>
+    <Pressable onPress={() => goToNib(pen.nib!)}>
       <LinedHeading text={'Nib'}/>
       <View style={styles.content}>
         <View style={styles.data}>
@@ -96,7 +108,7 @@ export default function PenViewScreen() {
         </View>
         <Image style={styles.image} uri={pen.nib.image.url}/>
       </View>
-    </View>
+    </Pressable>
   );
 
   const penView = (

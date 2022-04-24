@@ -1,6 +1,6 @@
 import {Text, View} from '../Styling/Themed';
 import {Image} from 'react-native-expo-image-cache';
-import {ScrollView, StyleSheet} from 'react-native';
+import {Pressable, ScrollView, StyleSheet} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {realmInstance} from '../../db/Realm';
@@ -10,6 +10,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ColourService} from '../../styles/ColourService';
 import {NibStackRouteType} from './NibNavigator';
 import {NibModel} from '../../db/models/NibModel';
+import {BottomTabProps} from '../../navigation/types';
 
 export default function NibViewScreen() {
   const colourSvc = new ColourService({});
@@ -57,6 +58,7 @@ export default function NibViewScreen() {
   const [nib, setNib] = useState<NibModel>()
 
   const navigation = useNavigation<NibStackRouteType['NibView']['navigation']>();
+  const rootNavigation = useNavigation<BottomTabProps['navigation']>();
   const route = useRoute<NibStackRouteType['NibView']['route']>();
   const {nibId} = route.params;
 
@@ -71,6 +73,10 @@ export default function NibViewScreen() {
 
   if (!nib) {
     return null;
+  }
+
+  const goToPen = (pen: PenModel) => {
+    return rootNavigation.navigate('Pen', {screen: 'PenView', params: {penId: pen._id.toHexString()}})
   }
 
   const nibView = (
@@ -88,7 +94,7 @@ export default function NibViewScreen() {
 
   const PenItemView = ({pen}: {pen: PenModel}) => {
     return (
-      <View>
+      <Pressable onPress={() => goToPen(pen)}>
         <View style={styles.content}>
           <View style={styles.data}>
             <Text style={styles.name}>{pen.manufacturer} {pen.name}</Text>
@@ -96,7 +102,7 @@ export default function NibViewScreen() {
           </View>
           <Image style={styles.image} uri={pen.image.url}/>
         </View>
-      </View>
+      </Pressable>
     );
   }
 
