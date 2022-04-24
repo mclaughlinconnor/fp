@@ -35,7 +35,7 @@ export function DropdownSelect({label, data, onSelect, defaultSelected, allowNon
     if (defaultSelected) {
       setSelected(defaultSelected);
     }
-  }, [defaultSelected])
+  }, [])
 
 
   const colourSvc = new ColourService({});
