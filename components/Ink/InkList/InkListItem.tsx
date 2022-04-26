@@ -1,47 +1,14 @@
-import {Pressable, StyleSheet, ViewStyle} from 'react-native';
-import {Image} from "react-native-expo-image-cache";
-import {Text, View} from '../../Styling/Themed';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {ColourService} from '../../../styles/ColourService';
-import useColorScheme from '../../../hooks/useColorScheme';
+import AbstractListItem from '../../Abstract/AbstractListItem';
 import {InkModel} from '../../../db/models/InkModel';
-import {useNavigation} from '@react-navigation/native';
 import {InkStackRouteType} from '../InkNavigator';
-
-const colourSvc = new ColourService({});
-
-const horizontalLayout: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-}
-
-const verticalLayout: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-}
+import {StyleSheet} from 'react-native';
+import {Text, View} from '../../Styling/Themed';
+import {useNavigation} from '@react-navigation/native';
 
 export default function InkListItem({ink}: {ink: InkModel}) {
-  const theme = useColorScheme();
   const navigation = useNavigation<InkStackRouteType['InkList']['navigation']>();
 
   const styles = StyleSheet.create({
-    icon: {
-      width: 100,
-      height: 100,
-      marginHorizontal: 10,
-    },
-    view: {
-      marginVertical: 4,
-      marginHorizontal: 10,
-      paddingVertical: 10,
-      borderRadius: theme === 'light' ? 0 : 4, // Borked shadows aren't visible with the dark theme
-      ...horizontalLayout,
-    },
-    data: {
-      marginHorizontal: 10,
-      ...verticalLayout
-    },
     color: {
       fontSize: 14,
     },
@@ -58,24 +25,15 @@ export default function InkListItem({ink}: {ink: InkModel}) {
     return navigation.navigate('InkView', {inkId: ink._id.toHexString()})
   }
 
-  const image = <Image style={{width: 100, height: 100, marginLeft: 12}} uri={ink.image?.url} />;
-  const noImage = <MaterialCommunityIcons
-      size={styles.icon.width}
-      style={[styles.icon, colourSvc.getTextColourStyle()]}
-      name={'water'}
-    />;
+  const dataElement = (
+    <View>
+      <Text style={styles.manufacturer}>{ink.manufacturer}</Text>
+      <Text style={styles.name}>{ink.name}</Text>
+      <Text style={styles.color}>{ink.colour}</Text>
+    </View>
+  )
 
   return (
-    <Pressable onPress={goToInk}>
-      <View style={styles.view} elevation={2}>
-        <Text>{Boolean(ink.image)}</Text>
-        {Boolean(ink.image) ? image : noImage}
-        <View style={styles.data}>
-          <Text style={styles.manufacturer}>{ink.manufacturer}</Text>
-          <Text style={styles.name}>{ink.name}</Text>
-          <Text style={styles.color}>{ink.colour}</Text>
-        </View>
-      </View>
-    </Pressable>
+    <AbstractListItem goToView={goToInk} imageUrl={ink.image.url} objectDataElement={dataElement}/>
   );
 }

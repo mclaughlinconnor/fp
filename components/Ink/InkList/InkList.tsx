@@ -1,60 +1,30 @@
-import {FlatList, StyleSheet} from 'react-native';
-import {View} from '../../Styling/Themed';
-import {FloatingActionButton} from '../../Styling/FloatingActionButton';
+import InkFilter from './InkFilter';
 import InkListItem from './InkListItem';
-import {useEffect, useState} from 'react';
-import {InkStackRouteType} from '../InkNavigator';
-import {realmInstance} from '../../../db/Realm';
+import {AbstractList} from '../../Abstract/AbstractList';
 import {InkModel} from '../../../db/models/InkModel';
+import {InkStackRouteType} from '../InkNavigator';
+import {useFiltered} from '../../useFiltered';
 import {useNavigation} from '@react-navigation/native';
 
 export default function InkList() {
   const navigation = useNavigation<InkStackRouteType['InkList']['navigation']>();
 
-  const [inks, setInks] = useState<Realm.Results<InkModel> | []>([]);
-
-  useEffect(() => {
-    if (!realmInstance) {
-      return;
-    }
-
-    const inkResults: Realm.Results<InkModel> = realmInstance.objects('Ink');
-    if (inkResults?.length) {
-      setInks(inkResults);
-    }
-
-    inkResults.addListener(() => {
-      setInks(realmInstance.objects('Ink'));
-    });
-
-    return () => {
-      inkResults?.removeAllListeners();
-
-      setInks([]);
-    };
-  }, [realmInstance]);
-
-  const styles = StyleSheet.create({
-    view: {
-      width: '100%',
-      flex: 1
-    },
-    container: {
-      paddingVertical: 5,
-    },
-  });
+  const [inks, setFilter] = useFiltered(InkModel, 'Ink');
 
   function renderItem({item}: {item: InkModel}) {
     return <InkListItem ink={item}/>;
   }
 
-  return (<View style={styles.view}>
-    <FlatList
-      contentContainerStyle={styles.container}
+  const createAction = () => navigation.navigate('InkCreate', {});
+
+  return (
+    <AbstractList
       data={inks}
-      renderItem={renderItem}
-      keyExtractor={item => item._id.toString()}
+      setFilter={setFilter}
+      listItemRender={renderItem}
+      noDataText={'No ink results found'}
+      createAction={createAction}
+      FilterComponent={InkFilter}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('InkCreate', {})}/>
-  </View>);
+  );
 }

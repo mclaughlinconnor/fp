@@ -1,33 +1,17 @@
-import {useEffect, useState} from 'react';
-import {Button, SafeAreaView, StyleSheet, ToastAndroid} from 'react-native';
-import {View} from '../Styling/Themed';
-import {ColourService} from '../../styles/ColourService';
-import {TextInput} from '../Styling/TextInput';
-import {realmInstance} from '../../db/Realm';
-import CameraInput from '../Styling/Camera/CameraInput';
+import AbstractCreateScreen, {createSpec} from '../Abstract/AbstractCreateScreen';
 import {CameraCapturedPicture} from 'expo-camera';
 import {FileModel} from '../../db/models/FileModel';
 import {InkModel} from '../../db/models/InkModel';
 import {InkStackRouteType} from './InkNavigator';
+import {ToastAndroid} from 'react-native';
+import {realmInstance} from '../../db/Realm';
+import {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
 export default function PenCreateScreen({}) {
-  const colourSvc = new ColourService({});
   const navigation = useNavigation<InkStackRouteType['InkCreate']['navigation']>();
   const route = useRoute<InkStackRouteType['InkCreate']['route']>();
   const {inkId} = route.params;
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column'
-    },
-    create: {
-      marginTop: 'auto',
-      marginBottom: 12,
-      marginHorizontal: 16,
-    }
-  });
 
   useEffect(() => {
     const uuid = new Realm.BSON.UUID(inkId);
@@ -41,21 +25,20 @@ export default function PenCreateScreen({}) {
     onChangeName(ink.name)
     onChangeManufacturer(ink.manufacturer)
     onChangeColour(ink.colour)
-    onChangeVolume(ink.volume)
+    onChangeVolume(ink.volume.toString())
   }, [realmInstance, inkId])
 
   const [name, onChangeName] = useState('');
   const [colour, onChangeColour] = useState('');
   const [manufacturer, onChangeManufacturer] = useState('');
-  const [volume, onChangeVolume] = useState<string | number>('');
+  const [volume, onChangeVolume] = useState<string>('');
 
   const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
 
   const [inkToBeUpdated, onChangeInkToBeUpdated] = useState<InkModel>();
-  const [confirmDisabled, onChangeConfirmDisabled] = useState<boolean>(false);
 
   const updateInk = async (): Promise<void> => {
-    if (!inkToBeUpdated) {
+    if (!inkToBeUpdated || !inkId) {
       return
     }
 
@@ -85,6 +68,8 @@ export default function PenCreateScreen({}) {
       inkToBeUpdated.name = name;
       inkToBeUpdated.volume = intVolume;
     })
+
+    navigation.navigate('InkView', {inkId});
   }
 
   const addInk = async (): Promise<void> => {
@@ -115,49 +100,24 @@ export default function PenCreateScreen({}) {
     realm?.write(() => {
       realm?.create('Ink', InkModel.generate(ink));
     });
+
+    navigation.navigate('InkList');
   }
 
-  const confirmOp = async () => {
-    onChangeConfirmDisabled(true)
-
-    if (inkId) {
-      await updateInk();
-      navigation.navigate('InkView', {inkId});
-    } else {
-      await addInk();
-      navigation.navigate('InkList');
-    }
-
-    ToastAndroid.show('Done', ToastAndroid.SHORT);
-  }
+  const createSpec: createSpec[] = [
+    {controlType: 'text', value: name, setValue: onChangeName, label: 'Ink name', prop: 'name'},
+    {controlType: 'text', value: manufacturer, setValue: onChangeManufacturer, label: 'Ink manufacturer', prop: 'manufacturer'},
+    {controlType: 'text', value: colour, setValue: onChangeColour, label: 'Ink colour', prop: 'colour'},
+    {controlType: 'text', value: volume, setValue: onChangeVolume, label: 'Ink volume (ml)', prop: 'volume', keyboardType: 'numeric'},
+    {controlType: 'camera', prop: 'photo', setValue: onChangePhoto},
+  ]
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        onChangeText={onChangeName}
-        value={name}
-        placeholder={'Ink name'}
-      />
-      <TextInput
-        onChangeText={onChangeManufacturer}
-        value={manufacturer}
-        placeholder={'Ink manufacturer'}
-      />
-      <TextInput
-        onChangeText={onChangeColour}
-        value={colour}
-        placeholder={'Ink colour'}
-      />
-      <TextInput
-        onChangeText={onChangeVolume}
-        value={volume.toString()}
-        placeholder={'Ink volume (ml)'}
-        keyboardType={'numeric'}
-      />
-      <CameraInput onPhotoSave={onChangePhoto}/>
-      <View style={styles.create}>
-        <Button title={inkId ? 'Update' : 'Create'} onPress={confirmOp} color={colourSvc.getColour(undefined, 'primary')} disabled={confirmDisabled}/>
-      </View>
-    </SafeAreaView>
+    <AbstractCreateScreen
+      createSpec={createSpec}
+      create={addInk}
+      update={updateInk}
+      {...(inkToBeUpdated ? {toBeUpdated: inkToBeUpdated} : undefined)}
+    />
   );
 }
