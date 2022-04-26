@@ -1,48 +1,29 @@
-import {useEffect, useState} from "react";
-import {Button, Modal, Pressable, ViewProps} from 'react-native';
-import {TextInput} from '../../Styling/TextInput';
-import {Text, View} from '../../Styling/Themed';
-import {DropdownSelect} from '../../Styling/DropdownSelect';
+import AbstractFilter, {filterSpec} from '../../Abstract/AbstractFilter';
+import CheckBox from '@react-native-community/checkbox';
 import {NibSize, NibSizes} from '../../../db/models/NibModel';
 import {PenModel} from '../../../db/models/PenModel';
+import {Text, View} from '../../Styling/Themed';
+import {ViewProps} from 'react-native';
 import {realmInstance} from '../../../db/Realm';
-import {ColourService} from '../../../styles/ColourService';
-import CheckBox from '@react-native-community/checkbox';
+import {useEffect, useState} from "react";
 
-export default function PenFilter({visible, setVisible, setFilter}: {visible: boolean, setVisible: (visible: boolean) => void, setFilter: (filter: string) => void}) {
-  const colourSvc = new ColourService({});
+type Props = {
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
+  setFilter: (filter: string) => void;
+}
 
-  const generateItem = (value: any): {value: any, label: string} => {
-    return {value, label: value.toString()}
-  }
-
-  const [selectedNibSize, setSelectedNibSize] = useState<NibSize>();
+export default function PenFilter({visible, setVisible, setFilter}: Props) {
+  const [nibSize, setNibSize] = useState<NibSize>();
   const [manufacturer, setManufacturer] = useState<string>();
   const [name, setName] = useState<string>();
   const [colour, setColour] = useState<string>();
-  const [inked, setInked] = useState<boolean>(false);
-  const [uninked, setUninked] = useState<boolean>(false);
+  const [inked, setInked] = useState<'inked' | 'uninked' | undefined>(undefined);
 
   const [allColours, setAllColours] = useState<string[]>([]);
   const [allManufacturers, setAllManufacturers] = useState<string[]>([]);
 
   const styles = {
-    overlay: {
-      width: '100%',
-      height: '100%',
-      flex: 1,
-    },
-    container: {
-      position: 'absolute',
-      bottom: 0,
-      right: 0,
-      left: 0,
-      paddingBottom: 16,
-    },
-    inputContainer: {
-      marginHorizontal: 16,
-      marginTop: 12,
-    },
     checkboxContainer: {
       flexDirection: 'row',
       display: 'flex',
@@ -69,16 +50,19 @@ export default function PenFilter({visible, setVisible, setFilter}: {visible: bo
       query.push(`colour == "${colour}"`);
     }
 
-    if (selectedNibSize) {
-      query.push(`nib.size == "${selectedNibSize}"`);
-    }
-
-    if (uninked) {
-      query.push('ink == null')
+    if (nibSize) {
+      query.push(`nib.size == "${nibSize}"`);
     }
 
     if (inked) {
-      query.push('ink != null')
+      switch (inked) {
+        case 'inked':
+          query.push('ink != null')
+          break;
+        case 'uninked':
+          query.push('ink == null')
+          break;
+      }
     }
 
     return query.join(' AND ')
@@ -98,84 +82,60 @@ export default function PenFilter({visible, setVisible, setFilter}: {visible: bo
     });
   }, [realmInstance])
 
-  const complete = () => {
-    setVisible(false);
-    setFilter(generateQueryString());
-  }
-
   const setUninkedQuery = (value: boolean) => {
-    setUninked(value);
     if (value) {
-      setInked(false)
+      setInked('uninked');
+    } else {
+      setInked(undefined);
     }
   }
 
   const setInkedQuery = (value: boolean) => {
-    setInked(value);
     if (value) {
-      setUninked(false)
+      setInked('inked');
+    } else {
+      setInked(undefined)
     }
   }
 
+  const inkedElement = (
+    <>
+      <View style={styles.checkboxContainer as ViewProps}>
+        <Text style={styles.checkboxLabel}>
+          Pen is inked?
+        </Text>
+        <CheckBox
+          value={inked === 'inked'}
+          onValueChange={setInkedQuery}
+        />
+      </View>
+      <View style={styles.checkboxContainer as ViewProps}>
+        <Text style={styles.checkboxLabel}>
+          Pen isn't inked?
+        </Text>
+        <CheckBox
+          value={inked === 'uninked'}
+          onValueChange={setUninkedQuery}
+        />
+      </View>
+    </>
+  )
+
+  const filterSpec: filterSpec[] = [
+    {controlType: 'text', label: 'Pen name', prop: 'name', setValue: setName, value: name},
+    {controlType: 'dropdown', label: 'Select pen colour...', prop: 'colour', data: allColours, setValue: setColour, value: colour},
+    {controlType: 'dropdown', label: 'Select pen manufacturer...', prop: 'manufacturer', data: allManufacturers, setValue: setManufacturer, value: manufacturer},
+    {controlType: 'dropdown', label: 'Select nib size...', prop: 'nibSize', data: NibSizes, setValue: setNibSize, value: nibSize},
+    {controlType: 'custom', value: inked, prop: 'inked', customElement: inkedElement},
+  ]
+
   return (
-    <Modal visible={visible} transparent animationType={'slide'}>
-      <Pressable style={styles.overlay as ViewProps} onPress={() => setVisible(false)}>
-        <View style={styles.container as ViewProps} elevation={12} colour={'background'}>
-          <TextInput placeholder={'Pen name'} onChangeText={setName} value={name} />
-          <View style={styles.inputContainer}>
-            <DropdownSelect
-              label={'Select pen colour...'}
-              data={allColours.map(generateItem)}
-              onSelect={setColour}
-              defaultSelected={colour ? generateItem(colour) : undefined}
-              allowNone={true}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <DropdownSelect
-              label={'Select pen manufacturer...'}
-              data={allManufacturers.map(generateItem)}
-              onSelect={setManufacturer}
-              defaultSelected={manufacturer ? generateItem(manufacturer) : undefined}
-              allowNone={true}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <DropdownSelect
-              label={'Select nib size...'}
-              data={NibSizes.map(generateItem)}
-              onSelect={setSelectedNibSize}
-              defaultSelected={selectedNibSize ? generateItem(selectedNibSize) : undefined}
-              allowNone={true}
-            />
-          </View>
-          <View style={[styles.inputContainer, styles.checkboxContainer as ViewProps]}>
-            <Text style={styles.checkboxLabel}>
-              Pen is inked?
-            </Text>
-            <CheckBox
-              value={inked}
-              onValueChange={setInkedQuery}
-            />
-          </View>
-          <View style={[styles.inputContainer, styles.checkboxContainer as ViewProps]}>
-            <Text style={styles.checkboxLabel}>
-              Pen isn't inked?
-            </Text>
-            <CheckBox
-              value={uninked}
-              onValueChange={setUninkedQuery}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Button
-              title={'Filter'}
-              onPress={complete}
-              color={colourSvc.getColour(undefined, 'primary')}
-            />
-          </View>
-        </View>
-      </Pressable>
-    </Modal>
+    <AbstractFilter
+      setFilter={setFilter}
+      visible={visible}
+      setVisible={setVisible}
+      generateQueryString={generateQueryString}
+      filterSpec={filterSpec}
+    />
   )
 }

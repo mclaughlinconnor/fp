@@ -1,37 +1,34 @@
-import {useEffect, useState} from 'react';
-import {PenModel} from '../../db/models/PenModel';
-import {Button, SafeAreaView, StyleSheet, ToastAndroid} from 'react-native';
-import {NibModel} from '../../db/models/NibModel';
-import {View} from '../Styling/Themed';
-import {DropdownSelect} from '../Styling/DropdownSelect';
-import {ColourService} from '../../styles/ColourService';
-import {TextInput} from '../Styling/TextInput';
-import {realmInstance} from '../../db/Realm';
-import CameraInput from '../Styling/Camera/CameraInput';
+import AbstractCreateScreen, {
+  createSpec,
+  isIdPropertyChanged,
+  isPropertyChanged,
+} from '../Abstract/AbstractCreateScreen';
 import {CameraCapturedPicture} from 'expo-camera';
 import {FileModel} from '../../db/models/FileModel';
 import {InkModel} from '../../db/models/InkModel';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {NibModel} from '../../db/models/NibModel';
+import {PenModel} from '../../db/models/PenModel';
 import {PenStackRouteType} from './PenNavigator';
 import {PenUpdateModel, UpdateTypes} from '../../db/models/PenUpdateModel';
+import {ToastAndroid} from 'react-native';
+import {realmInstance} from '../../db/Realm';
+import {useEffect, useState} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 export default function PenCreateScreen({}) {
-  const colourSvc = new ColourService({});
-  const route = useRoute<PenStackRouteType['PenCreate']['route']>();
   const navigation = useNavigation<PenStackRouteType['PenCreate']['navigation']>();
+  const route = useRoute<PenStackRouteType['PenCreate']['route']>();
   const {penId} = route.params;
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column'
-    },
-    create: {
-      marginTop: 'auto',
-      marginBottom: 12,
-      marginHorizontal: 16,
-    }
-  });
+  const [name, onChangeName] = useState('');
+  const [manufacturer, onChangeManufacturer] = useState('');
+  const [colour, onChangeColour] = useState('');
+  const [selectedNib, onChangeSelectedNib] = useState<NibModel | null>(null);
+  const [selectedInk, onChangeSelectedInk] = useState<InkModel | undefined>(undefined);
+  const [dbNibs, onChangeDbNibs] = useState<Realm.Results<NibModel> | []>([]);
+  const [dbInks, onChangeDbInks] = useState<Realm.Results<InkModel> | []>([]);
+  const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
+  const [penToBeUpdated, onChangePenToBeUpdated] = useState<PenModel>();
 
   useEffect(() => {
     const uuid = new Realm.BSON.UUID(penId);
@@ -49,20 +46,8 @@ export default function PenCreateScreen({}) {
     onChangeSelectedInk(pen.ink)
   }, [realmInstance, penId])
 
-  const [name, onChangeName] = useState('');
-  const [manufacturer, onChangeManufacturer] = useState('');
-  const [colour, onChangeColour] = useState('');
-  const [selectedNib, onChangeSelectedNib] = useState<NibModel | null>(null);
-  const [selectedInk, onChangeSelectedInk] = useState<InkModel | undefined>(undefined);
-  const [dbNibs, onChangeDbNibs] = useState<Realm.Results<NibModel> | []>([]);
-  const [dbInks, onChangeDbInks] = useState<Realm.Results<InkModel> | []>([]);
-  const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
-  const [penToBeUpdated, onChangePenToBeUpdated] = useState<PenModel>();
-
-  const [confirmDisabled, onChangeConfirmDisabled] = useState<boolean>(false);
-
   const updatePen = async (): Promise<void> => {
-    if (!penToBeUpdated) {
+    if (!penToBeUpdated || !penId) {
       return
     }
 
@@ -87,8 +72,8 @@ export default function PenCreateScreen({}) {
         image: isPropertyChanged(penToBeUpdated.image, image),
         manufacturer: isPropertyChanged(penToBeUpdated.manufacturer, manufacturer),
         name: isPropertyChanged(penToBeUpdated.name, name),
-        ink: isIdChanged(penToBeUpdated.ink, selectedInk),
-        nib: isIdChanged(penToBeUpdated.nib, selectedNib),
+        ink: isIdPropertyChanged(penToBeUpdated.ink, selectedInk),
+        nib: isIdPropertyChanged(penToBeUpdated.nib, selectedNib),
       })
 
       penToBeUpdated.colour = colour;
@@ -99,15 +84,9 @@ export default function PenCreateScreen({}) {
       penToBeUpdated.nib = selectedNib;
 
       realmInstance.create('PenUpdate', update);
+
+      navigation.navigate('PenView', {penId});
     })
-  }
-
-  const isIdChanged = (oldProperty: any, newProperty: any) => {
-    return oldProperty?._id?.toHexString() === newProperty?._id?.toHexString() ? undefined : newProperty;
-  }
-
-  const isPropertyChanged = (oldPenProperty: any, newPenProperty: any) => {
-    return oldPenProperty === newPenProperty ? undefined : newPenProperty;
   }
 
   const addPen = async (): Promise<void> => {
@@ -141,6 +120,8 @@ export default function PenCreateScreen({}) {
       })
 
       realmInstance.create('PenUpdate', update);
+
+      navigation.navigate('PenList');
     });
   }
 
@@ -171,9 +152,6 @@ export default function PenCreateScreen({}) {
     return () => {
       nibResults?.removeAllListeners();
       inkResults?.removeAllListeners();
-
-      onChangeDbNibs([]);
-      onChangeDbInks([]);
     };
   }, [realmInstance.isClosed, realmInstance]);
 
@@ -185,66 +163,23 @@ export default function PenCreateScreen({}) {
     return {value: ink, label: `${ink.manufacturer} ${ink.name} (${ink.volume}ml)`}
   }
 
-  const confirmOp = async () => {
-    onChangeConfirmDisabled(true)
+  const createSpec: createSpec[] = [
+    {controlType: 'text', prop: 'manufacturer', value: manufacturer, setValue: onChangeManufacturer, label: 'Pen manufacturer'},
+    {controlType: 'text', prop: 'name', value: name, setValue: onChangeName, label: 'Pen name'},
+    {controlType: 'text', prop: 'colour', value: colour, setValue: onChangeColour, label: 'Pen colour'},
+    {controlType: 'dropdown', prop: 'nib', value: selectedNib, setValue: onChangeSelectedNib, itemGenerator: generateNibItems, label: 'Select nib...', data: dbNibs},
+    {controlType: 'dropdown', prop: 'ink', value: selectedInk, setValue: onChangeSelectedInk, itemGenerator: generateInkItems, label: 'Select ink...', data: dbInks},
+    {controlType: 'camera', prop: 'photo', setValue: onChangePhoto},
+  ]
 
-    if (penId) {
-      await updatePen();
-      navigation.navigate('PenView', {penId});
-    } else {
-      await addPen();
-      navigation.navigate('PenList');
-    }
-
-    ToastAndroid.show('Done', ToastAndroid.SHORT);
-  }
+  console.log(selectedNib);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        onChangeText={onChangeManufacturer}
-        value={manufacturer}
-        placeholder={'Pen manufacturer'}
-      />
-      <TextInput
-        onChangeText={onChangeName}
-        value={name}
-        placeholder={'Pen name'}
-      />
-      <TextInput
-        onChangeText={onChangeColour}
-        value={colour}
-        placeholder={'Pen colour'}
-      />
-      <View style={{marginHorizontal: 16, marginTop: 12}}>
-        <DropdownSelect
-          label={'Select nib...'}
-          data={dbNibs.map(generateNibItems)}
-          onSelect={onChangeSelectedNib}
-          defaultSelected={
-            selectedNib ? generateNibItems(selectedNib) : undefined
-          }/>
-      </View>
-      <View style={{marginHorizontal: 16, marginTop: 12}}>
-        <DropdownSelect
-          label={'Select ink...'}
-          data={dbInks.map(generateInkItems)}
-          onSelect={onChangeSelectedInk}
-          defaultSelected={
-            selectedInk ? generateInkItems(selectedInk) : undefined
-          }
-          allowNone={true}
-        />
-      </View>
-      <CameraInput onPhotoSave={onChangePhoto}/>
-      <View style={styles.create}>
-        <Button
-          title={penId ? 'Update' : 'Create'}
-          onPress={confirmOp}
-          color={colourSvc.getColour(undefined, 'primary')}
-          disabled={confirmDisabled}
-        />
-      </View>
-    </SafeAreaView>
-  );
+    <AbstractCreateScreen
+      createSpec={createSpec}
+      create={addPen}
+      update={updatePen}
+      {...(penToBeUpdated ? {toBeUpdated: penToBeUpdated} : undefined)}
+    />
+  )
 }
