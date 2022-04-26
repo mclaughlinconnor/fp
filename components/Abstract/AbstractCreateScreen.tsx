@@ -1,5 +1,5 @@
 import CameraInput from '../Styling/Camera/CameraInput';
-import {Button, SafeAreaView, StyleSheet, ToastAndroid} from 'react-native';
+import {Button, KeyboardType, SafeAreaView, StyleSheet, ToastAndroid} from 'react-native';
 import {CameraCapturedPicture} from 'expo-camera';
 import {ColourService} from '../../styles/ColourService';
 import {DropdownSelect} from '../Styling/DropdownSelect';
@@ -27,6 +27,7 @@ type textControlSpec = {
   value: string;
   setValue: (value: string) => void;
   label: string;
+  keyboardType?: KeyboardType;
 }
 
 type cameraControlSpec = {
@@ -92,6 +93,7 @@ export default function AbstractCreateScreen({createSpec, create, update, toBeUp
             onChangeText={spec.setValue}
             value={spec.value}
             placeholder={spec.label}
+            keyboardType={spec.keyboardType || 'default'}
           />
         );
         break;
