@@ -1,34 +1,17 @@
-import {useEffect, useState} from 'react';
-import {Button, SafeAreaView, StyleSheet, ToastAndroid} from 'react-native';
-import {NibModel, NibSize, NibSizes} from '../../db/models/NibModel';
-import {View} from '../Styling/Themed';
-import {DropdownSelect} from '../Styling/DropdownSelect';
-import {ColourService} from '../../styles/ColourService';
-import {TextInput} from '../Styling/TextInput';
-import {realmInstance} from '../../db/Realm';
-import CameraInput from '../Styling/Camera/CameraInput';
+import AbstractCreateScreen, {createSpec} from '../Abstract/AbstractCreateScreen';
 import {CameraCapturedPicture} from 'expo-camera';
 import {FileModel} from '../../db/models/FileModel';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {NibModel, NibSize, NibSizes} from '../../db/models/NibModel';
 import {NibStackRouteType} from './NibNavigator';
+import {ToastAndroid} from 'react-native';
+import {realmInstance} from '../../db/Realm';
+import {useEffect, useState} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 export default function NibCreateScreen({}) {
-  const colourSvc = new ColourService({});
   const navigation = useNavigation<NibStackRouteType['NibCreate']['navigation']>();
   const route = useRoute<NibStackRouteType['NibCreate']['route']>();
   const {nibId} = route.params;
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column'
-    },
-    create: {
-      marginTop: 'auto',
-      marginBottom: 12,
-      marginHorizontal: 16,
-    }
-  });
 
   useEffect(() => {
     const uuid = new Realm.BSON.UUID(nibId);
@@ -51,14 +34,13 @@ export default function NibCreateScreen({}) {
   const [photo, onChangePhoto] = useState<CameraCapturedPicture>();
 
   const [nibToBeUpdated, onChangeNibToBeUpdated] = useState<NibModel>();
-  const [confirmDisabled, onChangeConfirmDisabled] = useState<boolean>(false);
 
   const generateNibSizeItems = (size: NibSize): {value: NibSize, label: string} => {
     return {value: size, label: size.toString()}
   }
 
   const updateNib = async (): Promise<void> => {
-    if (!nibToBeUpdated) {
+    if (!nibToBeUpdated || !nibId) {
       return
     }
 
@@ -80,6 +62,8 @@ export default function NibCreateScreen({}) {
       nibToBeUpdated.manufacturer = manufacturer;
       nibToBeUpdated.size = nibSize;
     })
+
+    navigation.navigate('NibView', {nibId});
   }
 
   const addNib = async (): Promise<void> => {
@@ -102,48 +86,23 @@ export default function NibCreateScreen({}) {
     realm?.write(() => {
       realm?.create('Nib', NibModel.generate(nib));
     });
+
+    navigation.navigate('NibList');
   }
 
-  const confirmOp = async () => {
-    onChangeConfirmDisabled(true)
-
-    if (nibId) {
-      await updateNib();
-      navigation.navigate('NibView', {nibId});
-    } else {
-      await addNib();
-      navigation.navigate('NibList');
-    }
-
-    ToastAndroid.show('Done', ToastAndroid.SHORT);
-  }
+  const createSpec: createSpec[] = [
+    {controlType: 'text', value: manufacturer, setValue: onChangeManufacturer, label: 'Nib manufacturer', prop: 'manufacturer'},
+    {controlType: 'text', value: colour, setValue: onChangeColour, label: 'Nib colour', prop: 'colour'},
+    {controlType: 'dropdown', value: nibSize, setValue: onChangeNibSize, prop: 'size', itemGenerator: generateNibSizeItems, label: 'Select nib size...', data: NibSizes},
+    {controlType: 'camera', prop: 'photo', setValue: onChangePhoto},
+  ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        onChangeText={onChangeManufacturer}
-        value={manufacturer}
-        placeholder={'Nib manufacturer'}
-      />
-      <TextInput
-        onChangeText={onChangeColour}
-        value={colour}
-        placeholder={'Nib colour'}
-      />
-      <View style={{marginHorizontal: 16, marginTop: 12}}>
-        <DropdownSelect
-          label={'Select nib size...'}
-          data={NibSizes.map(generateNibSizeItems)}
-          onSelect={onChangeNibSize}
-          defaultSelected={
-            nibSize ? generateNibSizeItems(nibSize) : undefined
-          }
-        />
-      </View>
-      <CameraInput onPhotoSave={onChangePhoto}/>
-      <View style={styles.create}>
-        <Button title={nibId ? 'Update' : 'Create'} onPress={confirmOp} color={colourSvc.getColour(undefined, 'primary')} disabled={confirmDisabled}/>
-      </View>
-    </SafeAreaView>
+    <AbstractCreateScreen
+      createSpec={createSpec}
+      create={addNib}
+      update={updateNib}
+      {...(nibToBeUpdated ? {toBeUpdated: nibToBeUpdated} : undefined)}
+    />
   );
 }

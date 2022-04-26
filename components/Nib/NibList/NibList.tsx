@@ -1,60 +1,29 @@
-import {FlatList, StyleSheet} from 'react-native';
-import {View} from '../../Styling/Themed';
-import {FloatingActionButton} from '../../Styling/FloatingActionButton';
+import NibFilter from './NibFilter';
 import NibListItem from './NibListItem';
-import {useEffect, useState} from 'react';
-import {NibStackRouteType} from '../NibNavigator';
-import {realmInstance} from '../../../db/Realm';
+import {AbstractList} from '../../Abstract/AbstractList';
 import {NibModel} from '../../../db/models/NibModel';
+import {NibStackRouteType} from '../NibNavigator';
+import {useFilteredNibs} from '../useFilteredNibs';
 import {useNavigation} from '@react-navigation/native';
 
 export default function NibList() {
   const navigation = useNavigation<NibStackRouteType['NibList']['navigation']>();
 
-  const [nibs, setNibs] = useState<Realm.Results<NibModel> | []>([]);
-
-  useEffect(() => {
-    if (!realmInstance) {
-      return;
-    }
-
-    const nibResults: Realm.Results<NibModel> = realmInstance.objects('Nib');
-    if (nibResults?.length) {
-      setNibs(nibResults);
-    }
-
-    nibResults.addListener(() => {
-      setNibs(realmInstance.objects('Nib'));
-    });
-
-    return () => {
-      nibResults?.removeAllListeners();
-
-      setNibs([]);
-    };
-  }, [realmInstance]);
-
-  const styles = StyleSheet.create({
-    view: {
-      width: '100%',
-      flex: 1
-    },
-    container: {
-      paddingVertical: 5,
-    },
-  });
+  const [nibs, setFilter] = useFilteredNibs();
 
   function renderItem({item}: {item: NibModel}) {
     return <NibListItem nib={item}/>;
   }
 
-  return (<View style={styles.view}>
-    <FlatList
-      contentContainerStyle={styles.container}
+  const createAction = () => navigation.navigate('NibCreate', {});
+
+  return (
+    <AbstractList
       data={nibs}
-      renderItem={renderItem}
-      keyExtractor={item => item._id.toString()}
+      setFilter={setFilter}
+      listItemRender={renderItem}
+      noDataText={'No nib results found...'}
+      createAction={createAction} FilterComponent={NibFilter}
     />
-    <FloatingActionButton onPress={() => navigation.navigate('NibCreate', {})}/>
-  </View>);
+  );
 }

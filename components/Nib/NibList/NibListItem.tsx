@@ -1,47 +1,14 @@
-import {Pressable, StyleSheet, ViewStyle} from 'react-native';
-import {Image} from "react-native-expo-image-cache";
-import {Text, View} from '../../Styling/Themed';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {ColourService} from '../../../styles/ColourService';
+import AbstractListItem from '../../Abstract/AbstractListItem';
 import {NibModel} from '../../../db/models/NibModel';
-import useColorScheme from '../../../hooks/useColorScheme';
 import {NibStackRouteType} from '../NibNavigator';
+import {StyleSheet} from 'react-native';
+import {Text, View} from '../../Styling/Themed';
 import {useNavigation} from '@react-navigation/native';
 
-const colourSvc = new ColourService({});
-
-const horizontalLayout: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-}
-
-const verticalLayout: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-}
-
 export default function NibListItem({nib}: {nib: NibModel}) {
-  const theme = useColorScheme();
   const navigation = useNavigation<NibStackRouteType['NibList']['navigation']>();
 
   const styles = StyleSheet.create({
-    icon: {
-      width: 100,
-      height: 100,
-      marginHorizontal: 10,
-    },
-    view: {
-      marginVertical: 4,
-      marginHorizontal: 10,
-      paddingVertical: 10,
-      borderRadius: theme === 'light' ? 0 : 4, // Borked shadows aren't visible with the dark theme
-      ...horizontalLayout,
-    },
-    data: {
-      marginHorizontal: 10,
-      ...verticalLayout
-    },
     color: {
       fontSize: 14,
     },
@@ -58,24 +25,15 @@ export default function NibListItem({nib}: {nib: NibModel}) {
     return navigation.navigate('NibView', {nibId: nib._id.toHexString()})
   }
 
-  const image = <Image style={{width: 100, height: 100, marginLeft: 12}} uri={nib.image?.url} />;
-  const noImage = <MaterialCommunityIcons
-      size={styles.icon.width}
-      style={[styles.icon, colourSvc.getTextColourStyle()]}
-      name={'fountain-pen-tip'}
-    />;
+  const nibDataElement = (
+    <View>
+      <Text style={styles.size}>{nib.size}</Text>
+      <Text style={styles.manufacturer}>{nib.manufacturer}</Text>
+      <Text style={styles.color}>{nib.colour}</Text>
+    </View>
+  )
 
   return (
-    <Pressable onPress={goToNib}>
-      <View style={styles.view} elevation={2}>
-        <Text>{Boolean(nib.image)}</Text>
-        {Boolean(nib.image) ? image : noImage}
-        <View style={styles.data}>
-          <Text style={styles.size}>{nib.size}</Text>
-          <Text style={styles.manufacturer}>{nib.manufacturer}</Text>
-          <Text style={styles.color}>{nib.colour}</Text>
-        </View>
-      </View>
-    </Pressable>
+    <AbstractListItem goToView={goToNib} imageUrl={nib.image.url} objectDataElement={nibDataElement}/>
   );
 }
