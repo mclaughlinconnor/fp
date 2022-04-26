@@ -3,13 +3,13 @@ import PenListItem from './PenListItem';
 import {AbstractList} from '../../Abstract/AbstractList';
 import {PenModel} from '../../../db/models/PenModel';
 import {PenStackRouteType} from '../PenNavigator';
-import {useFilteredPens} from '../useFilteredPens';
+import {useFiltered} from '../../useFiltered';
 import {useNavigation} from '@react-navigation/native';
 
 export default function PenList() {
   const navigation = useNavigation<PenStackRouteType['PenList']['navigation']>();
 
-  const [pens, setFilter] = useFilteredPens();
+  const [pens, setFilter] = useFiltered(PenModel, 'Pen');
 
   function renderItem({item}: {item: PenModel}) {
     return <PenListItem pen={item}/>;
