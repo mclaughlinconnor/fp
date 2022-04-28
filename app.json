@@ -12,7 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "runtimeVersion": "1.1",
+    "runtimeVersion": "1.2",
     "updates": {
       "fallbackToCacheTimeout": 0
     },

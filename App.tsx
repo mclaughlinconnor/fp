@@ -1,16 +1,18 @@
 import 'expo-dev-client';
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import {LogBox} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {StatusBar} from 'expo-status-bar';
-import {useEffect, useState} from 'react';
-import {GoogleAuthSigninButton} from './db/Firebase/auth/google/GoogleAuthSigninButton';
-import {View} from './components/Styling/Themed';
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import * as SplashScreen from 'expo-splash-screen';
 import Navigation from './navigation/Navigator';
 import Realm from 'realm';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './hooks/useColorScheme';
+import useNetworkState from './hooks/useNetworkState';
+import {GoogleAuthSigninButton} from './db/Firebase/auth/google/GoogleAuthSigninButton';
+import {LogBox, ToastAndroid} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {StatusBar} from 'expo-status-bar';
+import {View} from './components/Styling/Themed';
 import {openRealm, realmApp} from './db/Realm';
+import {useEffect, useState} from 'react';
 
 // Warning because I'm using weird versions of Expo SDK and React-Native to use Realm
 LogBox.ignoreLogs([
@@ -23,9 +25,14 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const isLoadingComplete = useCachedResources();
+  const networkState = useNetworkState();
   const colorScheme = useColorScheme();
 
   useEffect(() => {
+    if (!networkState?.isInternetReachable) {
+      return;
+    }
+
     return auth()
       .onAuthStateChanged(async (user) => {
         setUser(user)
@@ -38,13 +45,21 @@ export default function App() {
           await openRealm();
 
           setIsLoggedIn(true);
+
+          await SplashScreen.hideAsync();
         } else {
           await realmApp.currentUser?.logOut()
         }
       });
-  }, []);
+  }, [networkState?.isInternetReachable]);
 
-  if (!isLoadingComplete) {
+  useEffect(() => {
+    if (networkState && !networkState.isInternetReachable) {
+      ToastAndroid.show('There is no internet connection, try again later', ToastAndroid.LONG);
+    }
+  }, [networkState?.isInternetReachable])
+
+  if (!isLoadingComplete || !networkState?.isInternetReachable) {
     return null;
   }
 
