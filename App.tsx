@@ -46,7 +46,6 @@ export default function App() {
 
           setIsLoggedIn(true);
 
-          await SplashScreen.hideAsync();
         } else {
           await realmApp.currentUser?.logOut()
         }
@@ -54,9 +53,15 @@ export default function App() {
   }, [networkState?.isInternetReachable]);
 
   useEffect(() => {
-    if (networkState && !networkState.isInternetReachable) {
-      ToastAndroid.show('There is no internet connection, try again later', ToastAndroid.LONG);
+    const handle = async () => {
+      if (networkState && !networkState.isInternetReachable) {
+        ToastAndroid.show('There is no internet connection, try again later', ToastAndroid.LONG);
+      } else {
+        await SplashScreen.hideAsync();
+      }
     }
+
+    handle().then(() => console.log('Handled network event'))
   }, [networkState?.isInternetReachable])
 
   if (!isLoadingComplete || !networkState?.isInternetReachable) {
