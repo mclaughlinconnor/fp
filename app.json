@@ -7,6 +7,9 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "androidStatusBar": {
+      "hidden": true
+    },
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "cover",
