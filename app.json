@@ -2,7 +2,7 @@
   "expo": {
     "name": "fp",
     "slug": "fp",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -31,7 +31,8 @@
         "backgroundImage": "./assets/images/adaptive-background.png"
       },
       "package": "com.mclaughlin.fp",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
