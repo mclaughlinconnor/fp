@@ -20,6 +20,7 @@ type dropdownControlSpec = {
     label: string;
     value: any;
   };
+  allowNone: boolean;
 }
 
 type textControlSpec = {
@@ -107,6 +108,7 @@ export default function AbstractCreateScreen({createSpec, create, update, toBeUp
               defaultSelected={
                 spec.value ? spec.itemGenerator(spec.value) : undefined
               }
+              allowNone={spec.allowNone}
             />
           </View>
         );

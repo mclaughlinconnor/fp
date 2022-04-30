@@ -167,8 +167,8 @@ export default function PenCreateScreen({}) {
     {controlType: 'text', prop: 'manufacturer', value: manufacturer, setValue: onChangeManufacturer, label: 'Pen manufacturer'},
     {controlType: 'text', prop: 'name', value: name, setValue: onChangeName, label: 'Pen name'},
     {controlType: 'text', prop: 'colour', value: colour, setValue: onChangeColour, label: 'Pen colour'},
-    {controlType: 'dropdown', prop: 'nib', value: selectedNib, setValue: onChangeSelectedNib, itemGenerator: generateNibItems, label: 'Select nib...', data: dbNibs},
-    {controlType: 'dropdown', prop: 'ink', value: selectedInk, setValue: onChangeSelectedInk, itemGenerator: generateInkItems, label: 'Select ink...', data: dbInks},
+    {controlType: 'dropdown', prop: 'nib', value: selectedNib, setValue: onChangeSelectedNib, itemGenerator: generateNibItems, label: 'Select nib...', data: dbNibs, allowNone: false},
+    {controlType: 'dropdown', prop: 'ink', value: selectedInk, setValue: onChangeSelectedInk, itemGenerator: generateInkItems, label: 'Select ink...', data: dbInks, allowNone: true},
     {controlType: 'camera', prop: 'photo', setValue: onChangePhoto},
   ]
 

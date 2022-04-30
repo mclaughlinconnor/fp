@@ -93,7 +93,7 @@ export default function NibCreateScreen({}) {
   const createSpec: createSpec[] = [
     {controlType: 'text', value: manufacturer, setValue: onChangeManufacturer, label: 'Nib manufacturer', prop: 'manufacturer'},
     {controlType: 'text', value: colour, setValue: onChangeColour, label: 'Nib colour', prop: 'colour'},
-    {controlType: 'dropdown', value: nibSize, setValue: onChangeNibSize, prop: 'size', itemGenerator: generateNibSizeItems, label: 'Select nib size...', data: NibSizes},
+    {controlType: 'dropdown', value: nibSize, setValue: onChangeNibSize, prop: 'size', itemGenerator: generateNibSizeItems, label: 'Select nib size...', data: NibSizes, allowNone: false},
     {controlType: 'camera', prop: 'photo', setValue: onChangePhoto},
   ];
 
